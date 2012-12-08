@@ -11,7 +11,7 @@ function crono(valor_inicial, nome) {
 	this.UNIT = 1000;
 
 /**
- * Esta função deve ser escrita na camada de apresentação com o uso de prototype
+ * Esta funÃ§Ã£o deve ser escrita na camada de apresentaÃ§Ã£o com o uso de prototype
  * 
  * 	this.display = function display() {
  * 		if (this.valor>59) {
@@ -27,7 +27,7 @@ function crono(valor_inicial, nome) {
  */
 	
 /**
- * Esta função deve ser escrita na camada de apresentação com o uso de prototype
+ * Esta funÃ§Ã£o deve ser escrita na camada de apresentaÃ§Ã£o com o uso de prototype
  * 
  * 	this.display_bip = function display_bip() {
  * 		this.display(this.valor, this.nome);
@@ -36,7 +36,7 @@ function crono(valor_inicial, nome) {
  */
 	
 /**
- * Esta função deve ser escrita na camada de apresentação com o uso de prototype
+ * Esta funÃ§Ã£o deve ser escrita na camada de apresentaÃ§Ã£o com o uso de prototype
  * 
  * 	this.timeover = function timeover() {
  * 		document.getElementById(out).innerHTML = "--";
@@ -46,6 +46,7 @@ function crono(valor_inicial, nome) {
  	this.clear = function clear() {
  		this.running=false;
  		timelapsed = 0;
+ 		console.log("zerado timeelapsed");
 		this.timeover();
  	};
 
@@ -57,12 +58,15 @@ function crono(valor_inicial, nome) {
 	this.subtr = function subtr() {
 			this.valor--;
 			timelapsed++;
+			console.log("timeelapsed dentro do subtr",timelapsed);
 			this.display(this.valor, this.nome);
 	};
 
 	this.reset = function reset() {
 			this.valor = this.valor_inicial;
+			console.log("novo valor", this.valor);
 			timelapsed++;
+			console.log("timelapsed dentro do reset",timelapsed);
 			this.display_bip(this.valor, this.nome);
 	};
 
@@ -103,30 +107,37 @@ function crono(valor_inicial, nome) {
 	};
 
 	this.countdown = function countdown(lasttime) {
-		if (lasttime>timelapsed) {
-			var self = this;
-			if (timelapsed>(lasttime-this.valor_inicial)) {
+		if (lasttime>timelapsed) { //este crono não rodou até o fim antes do último pause			
+			if (timelapsed>(lasttime-this.valor)) { //este crono já havia começado antes do último pause
+				//aqui vai o código que retoma a contagem
+				this.valor = lasttime-timelapsed;
+				var self = this; //gargalo de desempenho
 				for(var p=1; p<this.valor; p++) {
 					timers.push(setTimeout(function() { self.subtr(); }, (lasttime-p-timelapsed)*this.UNIT));
 				}
-			} else {
-				for(var p=1; p<this.valor_inicial; p++) {
+				//timers.push(setTimeout(function() { self.reset(); }, (lasttime-this.valor-timelapsed)*this.UNIT));		
+				
+				
+			} else { //crono vai do inicio ao fim normal
+				var self = this; //gargalo de desempenho
+				for(var p=1; p<this.valor; p++) {
 					timers.push(setTimeout(function() { self.subtr(); }, (lasttime-p-timelapsed)*this.UNIT));
 				}
-				timers.push(setTimeout(function() { self.reset(); }, (lasttime-this.valor_inicial-timelapsed)*this.UNIT));
+				timers.push(setTimeout(function() { self.reset(); }, (lasttime-this.valor-timelapsed)*this.UNIT));
 			}			
 		}
 	};
 
 	this.run = function run(times, lag, lag2, delay) {
+		this.valor = this.valor_inicial; //reset para o caso de abort
 		if (this.sub_crono.length == 0) {
 			for (var k=times; k>0; k--) {
-				this.countdown(lag+lag2*k+this.valor_inicial*k+delay*(k-1));
+				this.countdown(lag+lag2*k+this.valor*k+delay*(k-1));
 			}
 		} else {
 			for (var i=0; i<times; i++) {
 				for (var j=0; j<this.sub_crono.length; j++) {
-					this.sub_crono[j].run(this.valor_inicial, lag+lag2+i*(this.tv+lag2+delay), this.total_sub_pre(j), this.total_sub_pos(j));
+					this.sub_crono[j].run(this.valor, lag+lag2+i*(this.tv+lag2+delay), this.total_sub_pre(j), this.total_sub_pos(j));
 				}
 			}
 		}
