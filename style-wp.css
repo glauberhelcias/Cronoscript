@@ -1,0 +1,28 @@
+@CHARSET "ISO-8859-1";
+body {
+	font-family: Segoe UI,Arial,Verdana,Tahoma,sans-serif;
+	font-size: 6mm;
+}
+
+a {
+	height:7ex;   
+    width:7ex;  
+    float:left;
+    margin:0.8ex 0.8ex 0 0;
+    padding:0.2ex;
+    background-color: #2E8B57;
+    color: #fff;
+    text-decoration: none;
+}
+
+#myDisplay {
+	font-size: 9mm;
+	font-stretch: condensed;
+	font-weight: lighter;
+	max-width: 15ex;
+	word-wrap: break-word;
+}
+
+input, select {
+	font-size: 5mm;
+}

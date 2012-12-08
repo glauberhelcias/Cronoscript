@@ -1,0 +1,222 @@
+<!DOCTYPE HTML>
+<html manifest="/cache.manifest">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
+<link rel="stylesheet" type="text/css" href="style-wp.css">
+<script type="text/javascript" src="crono.js"></script>
+<script type="text/javascript" src="script.js"></script>
+<script type="text/javascript">
+/**
+ * Created by: http://gustavopaes.net
+ * Created on: Nov/2009
+ * 
+ * Retorna os valores de parâmetros passados via url.
+ *
+ * @param String Nome do parâmetro.
+ */
+function _GET(name)
+{
+  var url   = window.location.search.replace("?", "");
+  var itens = url.split("&");
+
+  for(n in itens)
+  {
+    if( itens[n].match(name) )
+    {
+      return decodeURIComponent(itens[n].replace(name+"=", ""));
+    }
+  }
+  return null;
+}
+</script>
+<script type="text/javascript">
+
+//variáveis globais 
+var txtscript = "";
+var myscript = null;
+var editing = false;
+var inserting = false;
+var grp = 0;
+
+/** 
+ * como e onde serão apresentados os dígitos do cronômetro
+ */
+ crono.prototype.display = function (seconds, timername) { //não alterar esta linha
+	if (seconds>59) {
+		document.getElementById("myDisplay").innerHTML = Math.floor(seconds/60) + ":";
+		if (seconds%60<10) document.getElementById("myDisplay").innerHTML += "0";
+		document.getElementById("myDisplay").innerHTML += seconds%60 + "<br>" + timername;
+	} else {
+		document.getElementById("myDisplay").innerHTML = seconds + "<br>" + timername;
+	}
+ }
+ 
+/** 
+ * um cronometro (re)inicia
+ */
+ crono.prototype.display_bip = function (seconds, timername) { //não alterar esta linha
+	//mostra normalmente 
+	this.display(seconds, timername);
+	//toca um sonzinho ;)
+	document.getElementById("myDisplay").innerHTML += "<audio autoplay=\"autoplay\"><source src=\"bip.mp3\" type=\"audio/mp3\" /><source src=\"bip.ogg\" type=\"audio/ogg\" /></audio>";
+ }
+
+/** 
+ * o script encerra ou é abortado
+ */
+ crono.prototype.timeover = function () { //não alterar esta linha
+	document.getElementById("myDisplay").innerHTML = txtscript;
+ 	btnUpdt();
+ }
+
+/** 
+ * Dispara a ações do botão '+/set/reset/abort'
+ */
+ function btnSetPress() {
+	if (timelapsed>0) {
+		myscript.abort();
+	} else {
+		if (editing) { 
+			inserting = true;
+		} else { 
+			txtscript = "";
+			editing = true;
+		}
+	}
+	btnUpdt();
+ }
+
+/** 
+ * Dispara a ações do botão 'play/pause/)/Ok'
+ */
+ function btnCtrlPress() {
+	if (myscript.running) {
+		myscript.pause();
+	} else {
+		if (editing) {
+			if (grp==0) {
+				editing = false;
+			} else {
+				txtscript += ")";
+				grp--;	
+			} 
+		} else {
+			myscript.play();
+		}
+	}
+	btnUpdt();
+ };
+
+ /** 
+  * atualiza elementos de tela: botoes, formulário e painel
+  */
+ function btnUpdt() {
+	var CTRLBTN = document.getElementById("ctrlBtn");
+	var SETBTN = document.getElementById("setBtn");
+	if (myscript.running) {
+		CTRLBTN.innerHTML = '<a href="javascript:btnCtrlPress()" >pause</a>';
+		SETBTN.innerHTML = '<a href="javascript:btnSetPress()" >abort</a>';
+	} else {
+		if (editing) {
+			if (txtscript!="") {
+				document.getElementById("myDisplay").innerHTML = txtscript;
+			} else {
+				document.getElementById("myDisplay").innerHTML = "N&atilde;o h&aacute; script";
+			}
+			if (inserting) {
+				CTRLBTN.innerHTML = "";
+				SETBTN.innerHTML = "";
+				frmEditUpdt();
+			} else {
+				document.getElementById("editFrm").innerHTML="";
+				if (grp>0) {
+					if (txtscript.slice(-1)!="(") {
+						CTRLBTN.innerHTML = '<a href="javascript:btnCtrlPress()" >)</a>';
+					} else {
+						CTRLBTN.innerHTML = "";
+					}
+				} else {
+					if (txtscript!="") {
+						CTRLBTN.innerHTML = '<a href="javascript:btnCtrlPress()" >Ok</a>';
+					} else {
+						CTRLBTN.innerHTML = "";
+					}
+				}
+				SETBTN.innerHTML = '<a href="javascript:btnSetPress()" >+</a>';
+			}
+		} else {
+			if (txtscript!="") {
+				myscript = script(txtscript);
+				CTRLBTN.innerHTML = '<a href="javascript:btnCtrlPress()" >play</a>';
+			}
+			if (timelapsed==0) {
+				SETBTN.innerHTML = '<a href="javascript:btnSetPress()" >set</a>';
+			} else {
+				SETBTN.innerHTML = '<a href="javascript:btnSetPress()" >reset</a>';
+			}
+		}
+	}
+ }
+
+ function init() {
+	 txtscript = _GET('script');
+	 if (txtscript!=null) {
+		 myscript = script(txtscript);
+		 document.getElementById("myDisplay").innerHTML = txtscript;
+	 } else {
+		 myscript = new crono(0);
+		 txtscript = "";
+		 document.getElementById("myDisplay").innerHTML = "N&atilde;o h&aacute; script";
+	 }
+	 btnUpdt();
+ }
+ 
+ function btnInputPress() {
+	 var valida = false;
+	 var txtent = "";
+	 if ((txtscript != "")&&(txtscript.slice(-1)!="(")) {
+		 txtent = ",";
+	 }
+	 if (document.getElementsByName("tipo")[0].checked) {
+		 if (parseInt(document.getElementById("minutos").value)>0) {
+			 txtent += document.getElementById("minutos").value + "'";
+			 valida = true;
+		 }
+		 if (parseInt(document.getElementById("segundos").value)>0) {
+			 txtent += document.getElementById("segundos").value + '"';
+			 valida = true;
+		 }
+		 if (valida) {
+			 txtscript += txtent + document.getElementById("titulo").value;
+		 }
+	 } else {
+		 if (parseInt(document.getElementById("multiplica").value)>0) {
+			 grp++;
+			 txtscript += txtent + document.getElementById("multiplica").value + "(";
+		 }
+	 }
+	 inserting = false;
+	 btnUpdt();
+ }
+
+ function frmEditUpdt () {
+	 var frmContador = '<select id="minutos"><option selected="selected" value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select>&prime;&nbsp;<select id="segundos"><option selected="selected" value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="20">20</option><option value="30">30</option></select>&Prime;<br><input type="text" size="12" id="titulo"><br><input type="radio" name="tipo" value="contador" checked="checked" onclick="javascript:frmEditUpdt()">Contador<br><input type="radio" name="tipo" value="multiplicador" onclick="javascript:frmEditUpdt()">Multiplicador<br><a href="javascript:btnInputPress()" >Ok</a>';
+	 var frmMultiplicador = '<select id="multiplica"><option selected="selected" value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select><br><input type="radio" name="tipo" value="contador" onclick="javascript:frmEditUpdt()">Contador<br><input type="radio" name="tipo" checked="checked" value="multiplicador" onclick="javascript:frmEditUpdt()">Multiplicador<br><a href="javascript:btnInputPress()" >Ok</a>';
+	 var frmEdit = document.getElementById("editFrm"); 
+	 if (frmEdit.innerHTML=="") {
+		 frmEdit.innerHTML = frmContador;
+	 } else if (document.getElementsByName("tipo")[0].checked) {
+		 frmEdit.innerHTML = frmContador;
+	 } else {
+		 frmEdit.innerHTML = frmMultiplicador; 
+	 }
+ }
+</script>
+</head>
+<body onload="javascript:init()">
+<div id="myDisplay"></div>
+<span id="setBtn"></span>
+<span id="ctrlBtn"></span>
+<div id="editFrm"></div>
+</body>
+</html>
