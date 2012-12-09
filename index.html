@@ -10,9 +10,9 @@
  * Created by: http://gustavopaes.net
  * Created on: Nov/2009
  * 
- * Retorna os valores de parâmetros passados via url.
+ * Retorna os valores de parï¿½metros passados via url.
  *
- * @param String Nome do parâmetro.
+ * @param String Nome do parï¿½metro.
  */
 function _GET(name)
 {
@@ -31,7 +31,7 @@ function _GET(name)
 </script>
 <script type="text/javascript">
 
-//variáveis globais 
+//variï¿½veis globais 
 var txtscript = "";
 var myscript = null;
 var editing = false;
@@ -39,9 +39,9 @@ var inserting = false;
 var grp = 0;
 
 /** 
- * como e onde serão apresentados os dígitos do cronômetro
+ * como e onde serï¿½o apresentados os dï¿½gitos do cronï¿½metro
  */
- crono.prototype.display = function (seconds, timername) { //não alterar esta linha
+ crono.prototype.display = function (seconds, timername) { //nï¿½o alterar esta linha
 	if (seconds>59) {
 		document.getElementById("myDisplay").innerHTML = Math.floor(seconds/60) + ":";
 		if (seconds%60<10) document.getElementById("myDisplay").innerHTML += "0";
@@ -54,7 +54,7 @@ var grp = 0;
 /** 
  * um cronometro (re)inicia
  */
- crono.prototype.display_bip = function (seconds, timername) { //não alterar esta linha
+ crono.prototype.display_bip = function (seconds, timername) { //nï¿½o alterar esta linha
 	//mostra normalmente 
 	this.display(seconds, timername);
 	//toca um sonzinho ;)
@@ -62,15 +62,15 @@ var grp = 0;
  }
 
 /** 
- * o script encerra ou é abortado
+ * o script encerra ou ï¿½ abortado
  */
- crono.prototype.timeover = function () { //não alterar esta linha
+ crono.prototype.timeover = function () { //nï¿½o alterar esta linha
 	document.getElementById("myDisplay").innerHTML = txtscript;
  	btnUpdt();
  }
 
 /** 
- * Dispara a ações do botão '+/set/reset/abort'
+ * Dispara a aï¿½ï¿½es do botï¿½o '+/set/reset/abort'
  */
  function btnSetPress() {
 	if (timelapsed>0) {
@@ -87,7 +87,7 @@ var grp = 0;
  }
 
 /** 
- * Dispara a ações do botão 'play/pause/)/Ok'
+ * Dispara a aï¿½ï¿½es do botï¿½o 'play/pause/)/Ok'
  */
  function btnCtrlPress() {
 	if (myscript.running) {
@@ -108,7 +108,7 @@ var grp = 0;
  };
 
  /** 
-  * atualiza elementos de tela: botoes, formulário e painel
+  * atualiza elementos de tela: botoes, formulï¿½rio e painel
   */
  function btnUpdt() {
 	var CTRLBTN = document.getElementById("ctrlBtn");
@@ -145,12 +145,12 @@ var grp = 0;
 				SETBTN.innerHTML = '<a href="javascript:btnSetPress()" >+</a>';
 			}
 		} else {
-			if (txtscript!="") {
-				myscript = script(txtscript);
-				CTRLBTN.innerHTML = '<a href="javascript:btnCtrlPress()" >play</a>';
-			}
+			CTRLBTN.innerHTML = '<a href="javascript:btnCtrlPress()" >play</a>';
 			if (timelapsed==0) {
 				SETBTN.innerHTML = '<a href="javascript:btnSetPress()" >set</a>';
+				if (txtscript!="") {
+					myscript = script(txtscript);
+				}
 			} else {
 				SETBTN.innerHTML = '<a href="javascript:btnSetPress()" >reset</a>';
 			}
