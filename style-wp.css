@@ -1,12 +1,14 @@
 @CHARSET "ISO-8859-1";
 body {
 	font-family: Segoe UI,Arial,Verdana,Tahoma,sans-serif;
-	font-size: 6mm;
+	font-size: 8mm;
+  padding-left:0.8ex;
 }
 
 a {
-	height:7ex;   
-    width:7ex;  
+    font-size: 6mm;
+	  height:10ex;
+    width:10ex;
     float:left;
     margin:0.8ex 0.8ex 0 0;
     padding:0.2ex;
@@ -24,5 +26,5 @@ a {
 }
 
 input, select {
-	font-size: 5mm;
+	font-size: 7mm;
 }

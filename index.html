@@ -1,4 +1,4 @@
-﻿<!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html manifest="/cache.manifest">
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
@@ -11,9 +11,9 @@
  * Created by: http://gustavopaes.net
  * Created on: Nov/2009
  * 
- * Retorna os valores de par�metros passados via url.
+ * Retorna os valores de parâmetros passados via url.
  *
- * @param String Nome do par�metro.
+ * @param String Nome do parâmetro.
  */
 function _GET(name)
 {
@@ -32,7 +32,7 @@ function _GET(name)
 </script>
 <script type="text/javascript">
 
-//vari�veis globais 
+//variáveis globais 
 var txtscript = "";
 var myscript = null;
 var editing = false;
@@ -40,9 +40,9 @@ var inserting = false;
 var grp = 0;
 
 /** 
- * como e onde ser�o apresentados os d�gitos do cron�metro
+ * como e onde serão apresentados os dígitos do cronômetro
  */
- crono.prototype.display = function (seconds, timername) { //n�o alterar esta linha
+ crono.prototype.display = function (seconds, timername) { //não alterar esta linha
 	if (seconds>59) {
 		document.getElementById("myDisplay").innerHTML = Math.floor(seconds/60) + ":";
 		if (seconds%60<10) document.getElementById("myDisplay").innerHTML += "0";
@@ -55,7 +55,7 @@ var grp = 0;
 /** 
  * um cronometro (re)inicia
  */
- crono.prototype.display_bip = function (seconds, timername) { //n�o alterar esta linha
+ crono.prototype.display_bip = function (seconds, timername) { //não alterar esta linha
 	//mostra normalmente 
 	this.display(seconds, timername);
 	//toca um sonzinho ;)
@@ -63,15 +63,15 @@ var grp = 0;
  }
 
 /** 
- * o script encerra ou � abortado
+ * o script encerra ou é abortado
  */
- crono.prototype.timeover = function () { //n�o alterar esta linha
+ crono.prototype.timeover = function () { //não alterar esta linha
 	document.getElementById("myDisplay").innerHTML = txtscript;
  	btnUpdt();
  }
 
 /** 
- * Dispara a a��es do bot�o '+/set/reset/abort'
+ * Dispara a ações do botão '+/set/reset/abort'
  */
  function btnSetPress() {
 	if (timelapsed>0) {
@@ -88,7 +88,7 @@ var grp = 0;
  }
 
 /** 
- * Dispara a a��es do bot�o 'play/pause/)/Ok'
+ * Dispara a ações do botão 'play/pause/)/Ok'
  */
  function btnCtrlPress() {
 	if (myscript.running) {
@@ -109,7 +109,7 @@ var grp = 0;
  };
 
  /** 
-  * atualiza elementos de tela: botoes, formul�rio e painel
+  * atualiza elementos de tela: botoes, formulário e painel
   */
  function btnUpdt() {
 	var CTRLBTN = document.getElementById("ctrlBtn");
@@ -201,7 +201,7 @@ var grp = 0;
  }
 
  function frmEditUpdt () {
-	 var frmContador = '<select id="minutos"><option selected="selected" value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select>&prime;&nbsp;<select id="segundos"><option selected="selected" value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="20">20</option><option value="30">30</option></select>&Prime;<br><input type="text" size="12" id="titulo"><br><input type="radio" name="tipo" value="contador" checked="checked" onclick="javascript:frmEditUpdt()">Contador<br><input type="radio" name="tipo" value="multiplicador" onclick="javascript:frmEditUpdt()">Multiplicador<br><a href="javascript:btnInputPress()" >Ok</a>';
+	 var frmContador = '<select id="minutos"><option selected="selected" value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select>&prime;&nbsp;<select id="segundos"><option selected="selected" value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="20">20</option><option value="30">30</option></select>&Prime;<br><input type="text" size="16" id="titulo"><br><input type="radio" name="tipo" value="contador" checked="checked" onclick="javascript:frmEditUpdt()">Contador<br><input type="radio" name="tipo" value="multiplicador" onclick="javascript:frmEditUpdt()">Multiplicador<br><a href="javascript:btnInputPress()" >Ok</a>';
 	 var frmMultiplicador = '<select id="multiplica"><option selected="selected" value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select><br><input type="radio" name="tipo" value="contador" onclick="javascript:frmEditUpdt()">Contador<br><input type="radio" name="tipo" checked="checked" value="multiplicador" onclick="javascript:frmEditUpdt()">Multiplicador<br><a href="javascript:btnInputPress()" >Ok</a>';
 	 var frmEdit = document.getElementById("editFrm"); 
 	 if (frmEdit.innerHTML=="") {
