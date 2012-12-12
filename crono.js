@@ -4,44 +4,12 @@ var timelapsed = 0;
 function crono(valor_inicial, nome) {
 	this.valor_inicial = valor_inicial;
 	this.nome = nome;
+	this.remtimes = 0;
 	this.valor = valor_inicial;
 	this.tv = valor_inicial;
 	this.sub_crono = new Array();
 	this.running = false;
 	this.UNIT = 1000;
-
-/**
- * Esta função deve ser escrita na camada de apresentação com o uso de prototype
- * 
- * 	this.display = function display() {
- * 		if (this.valor>59) {
- * 			document.getElementById(out).innerHTML = Math.floor(this.valor/60) + ":";
- * 			if (this.valor%60<10) {
- * 				document.getElementById(out).innerHTML += "0";
- * 			}
- * 			document.getElementById(out).innerHTML += this.valor%60 + " " + this.nome;
- * 		} else {
- * 			document.getElementById(out).innerHTML = this.valor + " " + this.nome;
- * 		}
- * 	};
- */
-	
-/**
- * Esta função deve ser escrita na camada de apresentação com o uso de prototype
- * 
- * 	this.display_bip = function display_bip() {
- * 		this.display(this.valor, this.nome);
- * 		document.getElementById(out).innerHTML += "<audio autoplay=\"autoplay\"><source src=\"bip.mp3\" type=\"audio/mp3\" /><source src=\"bip.ogg\" type=\"audio/ogg\" /></audio>";
- * 	};
- */
-	
-/**
- * Esta função deve ser escrita na camada de apresentação com o uso de prototype
- * 
- * 	this.timeover = function timeover() {
- * 		document.getElementById(out).innerHTML = "--";
- * 	};
- */ 
 
  	this.clear = function clear() {
  		this.running=false;
@@ -57,13 +25,14 @@ function crono(valor_inicial, nome) {
 	this.subtr = function subtr() {
 			this.valor--;
 			timelapsed++;
-			this.display(this.valor, this.nome);
+			this.display(this.valor, this.nome, this.remtimes);
 	};
 
 	this.reset = function reset() {
 			this.valor = this.valor_inicial;
+      this.remtimes--;
 			timelapsed++;
-			this.display_bip(this.valor, this.nome);
+			this.display_bip(this.valor, this.nome, this.remtimes);
 	};
 
 	this.total_valor = function total_valor() {
@@ -104,6 +73,7 @@ function crono(valor_inicial, nome) {
 
 	this.countdown = function countdown(lasttime) {
 		if (lasttime>timelapsed) {
+      this.remtimes++;
 			var self = this;
 			if (timelapsed>(lasttime-this.valor_inicial)) {
 				for(var p=1; p<this.valor; p++) {
