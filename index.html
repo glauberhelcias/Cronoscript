@@ -99,7 +99,7 @@ var grp = 0;
 			if (txtscript!="") {
 				document.getElementById("myDisplay").innerHTML = txtscript;
 			} else {
-				document.getElementById("myDisplay").innerHTML = "N&atilde;o h&aacute; script";
+				document.getElementById("myDisplay").innerHTML = "No script";
 			}
 			if (inserting) {
 				CTRLBTN.innerHTML = "";
@@ -123,29 +123,15 @@ var grp = 0;
 				SETBTN.innerHTML = '<a href="javascript:btnSetPress()" >+</a>';
 			}
 		} else {
-			CTRLBTN.innerHTML = '<a href="javascript:btnCtrlPress()" >play</a>';
+			if (txtscript!="") CTRLBTN.innerHTML = '<a href="javascript:btnCtrlPress()" >play</a>';
 			if (timelapsed==0) {
 				SETBTN.innerHTML = '<a href="javascript:btnSetPress()" >set</a>';
-				if (txtscript!="") {
-					myscript = script(txtscript);
-				}
+				if (txtscript!="") myscript = script(txtscript);
 			} else {
 				SETBTN.innerHTML = '<a href="javascript:btnSetPress()" >reset</a>';
 			}
 		}
 	}
- }
-
- function init() {
-	 if (txtscript!=null) {
-		 myscript = script(txtscript);
-		 document.getElementById("myDisplay").innerHTML = txtscript;
-	 } else {
-		 myscript = new crono(0);
-		 txtscript = "";
-		 document.getElementById("myDisplay").innerHTML = "No script";
-	 }
-	 btnUpdt();
  }
  
  function btnInputPress() {
@@ -190,7 +176,7 @@ var grp = 0;
  }
 </script>
 </head>
-<body onload="javascript:init()">
+<body onload="javascript:btnUpdt()">
 <div id="myDisplay"></div>
 <span id="setBtn"></span>
 <span id="ctrlBtn"></span>
