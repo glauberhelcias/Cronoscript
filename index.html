@@ -7,32 +7,7 @@
 <script type="text/javascript" src="crono.js"></script>
 <script type="text/javascript" src="script.js"></script>
 <script type="text/javascript">
-/**
- * Created by: http://gustavopaes.net
- * Created on: Nov/2009
- * 
- * Retorna os valores de parâmetros passados via url.
- *
- * @param String Nome do parâmetro.
- */
-function _GET(name)
-{
-  var url   = window.location.search.replace("?", "");
-  var itens = url.split("&");
-
-  for(n in itens)
-  {
-    if( itens[n].match(name) )
-    {
-      return decodeURIComponent(itens[n].replace(name+"=", ""));
-    }
-  }
-  return null;
-}
-</script>
-<script type="text/javascript">
-
-//variÃƒÂ¡veis globais 
+//variaveis globais 
 var txtscript = "";
 var myscript = null;
 var editing = false;
@@ -57,7 +32,7 @@ var grp = 0;
 /** 
  * um cronometro (re)inicia
  */
- crono.prototype.display_bip = function (seconds, timername, remtimes) { //nÃƒÂ£o alterar esta linha
+ crono.prototype.display_bip = function (seconds, timername, remtimes) { //nao alterar esta linha
 	//mostra normalmente 
 	this.display(seconds, timername, remtimes);
 	//toca um sonzinho ;)
@@ -111,7 +86,7 @@ var grp = 0;
  };
 
  /** 
-  * atualiza elementos de tela: botoes, formulário e painel
+  * atualiza elementos de tela: botoes, formulario e painel
   */
  function btnUpdt() {
 	var CTRLBTN = document.getElementById("ctrlBtn");
@@ -162,14 +137,13 @@ var grp = 0;
  }
 
  function init() {
-	 txtscript = _GET('script');
 	 if (txtscript!=null) {
 		 myscript = script(txtscript);
 		 document.getElementById("myDisplay").innerHTML = txtscript;
 	 } else {
 		 myscript = new crono(0);
 		 txtscript = "";
-		 document.getElementById("myDisplay").innerHTML = "N&atilde;o h&aacute; script";
+		 document.getElementById("myDisplay").innerHTML = "No script";
 	 }
 	 btnUpdt();
  }
