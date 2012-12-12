@@ -73,13 +73,14 @@ function crono(valor_inicial, nome) {
 
 	this.countdown = function countdown(lasttime) {
 		if (lasttime>timelapsed) {
-      this.remtimes++;
-			var self = this;
 			if (timelapsed>(lasttime-this.valor_inicial)) {
+				var self = this;
 				for(var p=1; p<this.valor; p++) {
 					timers.push(setTimeout(function() { self.subtr(); }, (lasttime-p-timelapsed)*this.UNIT));
 				}
 			} else {
+				if (timelapsed==0) this.remtimes++;
+				var self = this;
 				for(var p=1; p<this.valor_inicial; p++) {
 					timers.push(setTimeout(function() { self.subtr(); }, (lasttime-p-timelapsed)*this.UNIT));
 				}
