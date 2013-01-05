@@ -9,7 +9,7 @@
 <script type="text/javascript">
 //variaveis globais 
 var txtscript = "";
-var myscript = new crono(0);
+var myscript = new Crono(0);
 var editing = false;
 var inserting = false;
 var grp = 0;
@@ -17,7 +17,7 @@ var grp = 0;
 /** 
  * como e onde serao apresentados os digitos do cronometro
  */
- crono.prototype.display = function (seconds, timername, remtimes) { //nao alterar esta linha
+ Crono.prototype.display = function (seconds, timername, remtimes) { //nao alterar esta linha
 	if (seconds>59) {
 		txtnum = '<span id="time">' + Math.floor(seconds/60) + ":";
 		if (seconds%60<10) txtnum += "0";
@@ -32,7 +32,7 @@ var grp = 0;
 /** 
  * um cronometro (re)inicia
  */
- crono.prototype.display_bip = function (seconds, timername, remtimes) { //nao alterar esta linha
+ Crono.prototype.display_bip = function (seconds, timername, remtimes) { //nao alterar esta linha
 	//mostra normalmente 
 	this.display(seconds, timername, remtimes);
 	//toca um sonzinho ;)
@@ -42,7 +42,7 @@ var grp = 0;
 /** 
  * o script encerra ou eh abortado
  */
- crono.prototype.timeover = function () { //nao alterar esta linha
+ Crono.prototype.timeover = function () { //nao alterar esta linha
 	document.getElementById("myDisplay").innerHTML = txtscript;
  	btnUpdt();
  }
@@ -79,7 +79,9 @@ var grp = 0;
 				grp--;	
 			} 
 		} else {
+			console.profile();
 			myscript.play();
+			console.profileEnd();
 		}
 	}
 	btnUpdt();
@@ -126,7 +128,10 @@ var grp = 0;
 			if (txtscript!="") CTRLBTN.innerHTML = '<a href="javascript:btnCtrlPress()" >play</a>';
 			if (timelapsed==0) {
 				SETBTN.innerHTML = '<a href="javascript:btnSetPress()" >set</a>';
-				if (txtscript!="") myscript = script(txtscript);
+				
+				if (txtscript!="") {
+					myscript = new Script(txtscript);
+				}
 			} else {
 				SETBTN.innerHTML = '<a href="javascript:btnSetPress()" >reset</a>';
 			}
