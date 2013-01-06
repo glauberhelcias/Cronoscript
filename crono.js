@@ -2,6 +2,7 @@ var timers = new Array();
 var timelapsed = 0;
 var UNIT = 1000;
 
+
 var Crono = function(valor_inicial, nome) {
 	this.valor_inicial = valor_inicial;
 	this.nome = nome;
@@ -24,9 +25,22 @@ var Crono = function(valor_inicial, nome) {
 			}
 		}
 	};
-};
+	
+	this.pause = function () {
+		this.running = false;
+		for(;timers.length>0;clearTimeout(timers.pop()));
+	};
 
- 	Crono.prototype.clear = function () {
+	this.play = function () {
+		this.run(1,0,0,0);
+		this.running = true;
+		var self = this;
+		timers.push(setTimeout(function () { self.clear(); }, (this.tv-timelapsed)*UNIT));
+	};
+
+};
+ 	
+	Crono.prototype.clear = function () {
  		this.running=false;
  		timelapsed = 0;
 		this.timeover();
@@ -103,31 +117,51 @@ var Crono = function(valor_inicial, nome) {
 			}			
 		}
 	};
-
-
 	
 	Crono.prototype.abort = function () {
 		for(this.clear();timers.length>0;clearTimeout(timers.pop()));
 	};
 	
-	Crono.prototype.pause = function () {
-		this.running = false;
-		for(;timers.length>0;clearTimeout(timers.pop()));
-	};
-
-	Crono.prototype.play = function () {
-		this.run(1,0,0,0);
-		this.running = true;
-		var self = this;
-		timers.push(setTimeout(function () { self.clear(); }, (this.tv-timelapsed)*UNIT));
-	};
 
 var Dist = function(valor_distancia, nome) {
 	this.valor_distancia = valor_distancia;
+	this.check_interval = 4;
 	Crono.call(this, 0, nome);
+	
+	this.subtr = function (lastpoint) {
+		if (this.running) { 
+			this.pause();
+		}
+		//mock obter ponto atual
+		actualpoint = {
+				latitude: -44.25231,
+				longitude: -3.68715
+		};
+		this.valor_distancia -= 10; //distance(lastpoint, actualpoint);
+		//mockEnd
+		if (this.valor_distancia>0) {
+			var self = this;
+			timers.push(setTimeout(function () { self.subtr(actualpoint); }, this.check_interval*UNIT));
+		} else {
+			this.remtimes--;
+			this.play();
+		}
+		this.display(this.valor_distancia, this.nome, this.remtimes);
+		console.log("Falta", this.valor_distancia, "metros");		
+	};
+	
+	this.countdown = function (lasttime) {
+		//mock obter ponto de partida
+		startpoint = {
+				latitude: -44.65231,
+				longitude: -3.48715
+		};
+		//mockEnd
+		this.remtimes++;
+		var self = this;
+		timers.push(setTimeout(function () { self.subtr(startpoint); }, (lasttime-timelapsed)*UNIT));
+	};
+
 };
 
-	Dist.prototype.countdown = function (lasttime) {
-		var self = this;
-		timers.push(setTimeout(function () { console.log("Contei", self.valor_distancia, "metros"); }, (lasttime-timelapsed)*UNIT));
-	};
+	Dist.prototype = Object.create( Crono.prototype );
