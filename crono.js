@@ -10,6 +10,20 @@ var Crono = function(valor_inicial, nome) {
 	this.tv = valor_inicial;
 	this.sub_crono = new Array();
 	this.running = false;
+	
+	this.run = function (times, lag, lag2, delay) {
+		if (this.sub_crono.length == 0) {
+			for (var k=times; k>0; k--) {
+				this.countdown(lag+lag2*k+this.valor_inicial*k+delay*(k-1));
+			}
+		} else {
+			for (var i=0; i<times; i++) {
+				for (var j=0; j<this.sub_crono.length; j++) {
+					this.sub_crono[j].run(this.valor_inicial, lag+lag2+i*(this.tv+lag2+delay), this.total_sub_pre(j), this.total_sub_pos(j));
+				}
+			}
+		}
+	};
 };
 
  	Crono.prototype.clear = function () {
@@ -90,19 +104,7 @@ var Crono = function(valor_inicial, nome) {
 		}
 	};
 
-	Crono.prototype.run = function (times, lag, lag2, delay) {
-		if (this.sub_crono.length == 0) {
-			for (var k=times; k>0; k--) {
-				this.countdown(lag+lag2*k+this.valor_inicial*k+delay*(k-1));
-			}
-		} else {
-			for (var i=0; i<times; i++) {
-				for (var j=0; j<this.sub_crono.length; j++) {
-					this.sub_crono[j].run(this.valor_inicial, lag+lag2+i*(this.tv+lag2+delay), this.total_sub_pre(j), this.total_sub_pos(j));
-				}
-			}
-		}
-	};
+
 	
 	Crono.prototype.abort = function () {
 		for(this.clear();timers.length>0;clearTimeout(timers.pop()));
@@ -120,10 +122,12 @@ var Crono = function(valor_inicial, nome) {
 		timers.push(setTimeout(function () { self.clear(); }, (this.tv-timelapsed)*UNIT));
 	};
 
-var Dist = function(valor_inicial, nome) {
-	Crono.call(this, valor_inicial, nome);
+var Dist = function(valor_distancia, nome) {
+	this.valor_distancia = valor_distancia;
+	Crono.call(this, 0, nome);
 };
 
-	Dist.prototype.countdown = function() {
-		console.log("há de se implementar a contagem regressiva de distâncias");
+	Dist.prototype.countdown = function (lasttime) {
+		var self = this;
+		timers.push(setTimeout(function () { console.log("Contei", self.valor_distancia, "metros"); }, (lasttime-timelapsed)*UNIT));
 	};
