@@ -10,39 +10,11 @@ var Crono = function(valor_inicial, nome) {
 	this.valor = valor_inicial;
 	this.tv = valor_inicial;
 	this.sub_crono = new Array();
-	this.running = false;
-	
-	this.run = function (times, lag, lag2, delay) {
-		if (this.sub_crono.length == 0) {
-			for (var k=times; k>0; k--) {
-				this.countdown(lag+lag2*k+this.valor_inicial*k+delay*(k-1));
-			}
-		} else {
-			for (var i=0; i<times; i++) {
-				for (var j=0; j<this.sub_crono.length; j++) {
-					this.sub_crono[j].run(this.valor_inicial, lag+lag2+i*(this.tv+lag2+delay), this.total_sub_pre(j), this.total_sub_pos(j));
-				}
-			}
-		}
-	};
-	
-	this.pause = function () {
-		this.running = false;
-		for(;timers.length>0;clearTimeout(timers.pop()));
-	};
-
-	this.play = function () {
-		this.run(1,0,0,0);
-		this.running = true;
-		var self = this;
-		timers.push(setTimeout(function () { self.clear(); }, (this.tv-timelapsed)*UNIT));
-	};
-
 };
  	
 	Crono.prototype.clear = function () {
- 		this.running=false;
- 		timelapsed = 0;
+		timers = new Array();
+		timelapsed = 0;
 		this.timeover();
  	};
 
@@ -101,38 +73,76 @@ var Crono = function(valor_inicial, nome) {
 	};
 
 	Crono.prototype.countdown = function (lasttime) {
-		if (lasttime>timelapsed) {
-			if (timelapsed>(lasttime-this.valor_inicial)) {
-				var self = this;
-				for(var p=1; p<this.valor; p++) {
-					timers.push(setTimeout(function() { self.subtr(); }, (lasttime-p-timelapsed)*UNIT));
-				}
-			} else {
-				if (timelapsed==0) this.remtimes++;
-				var self = this;
-				for(var p=1; p<this.valor_inicial; p++) {
-					timers.push(setTimeout(function() { self.subtr(); }, (lasttime-p-timelapsed)*UNIT));
-				}
-				timers.push(setTimeout(function() { self.reset(); }, (lasttime-this.valor_inicial-timelapsed)*UNIT));
-			}			
-		}
+		if (timelapsed>(lasttime-this.valor_inicial)) {
+			var self = this;
+			for(var p=1; p<this.valor; p++) {
+				timers.push(setTimeout(function() { self.subtr(); }, (lasttime-p-timelapsed)*UNIT));
+			}
+		} else {
+			if (timelapsed==0) this.remtimes++;
+			var self = this;
+			for(var p=1; p<this.valor_inicial; p++) {
+				timers.push(setTimeout(function() { self.subtr(); }, (lasttime-p-timelapsed)*UNIT));
+			}
+			timers.push(setTimeout(function() { self.reset(); }, (lasttime-this.valor_inicial-timelapsed)*UNIT));
+		}		
 	};
 	
 	Crono.prototype.abort = function () {
-		for(this.clear();timers.length>0;clearTimeout(timers.pop()));
+		this.pause();
+		this.clear();
 	};
 	
+	Crono.prototype.running = function () {
+		if (timers.length==0) {
+			return false;
+		} else {
+			return true;
+		}
+		
+	};
+	
+	Crono.prototype.run = function (times, lag, lag2, delay) {
+		if (this.sub_crono.length == 0) {
+			for (var k=times; k>0; k--) {
+				lasttime = lag+lag2*k+this.valor_inicial*k+delay*(k-1);
+				if (lasttime>timelapsed) {
+					this.countdown(lasttime);
+				}
+			}
+		} else {
+			for (var i=0; i<times; i++) {
+				for (var j=0; j<this.sub_crono.length; j++) {
+					this.sub_crono[j].run(this.valor_inicial, lag+lag2+i*(this.tv+lag2+delay), this.total_sub_pre(j), this.total_sub_pos(j));
+				}
+			}
+		}
+	};
+	
+	Crono.prototype.pause = function () {
+		for(;timers.length>0;clearTimeout(timers.pop()));
+	};
+
+	Crono.prototype.play = function () {
+		this.run(1,0,0,0);
+		var self = this;
+		timers.push(setTimeout(function () { self.clear(); }, (this.tv-timelapsed)*UNIT));
+	};
 
 var Dist = function(valor_distancia, nome) {
+	this.valor_distancia_inicial = valor_distancia;
 	this.valor_distancia = valor_distancia;
 	this.check_interval = 4;
-	Crono.call(this, 0, nome);
+	Crono.call(this, 0.001, nome);
+};
+
+	Dist.prototype = Object.create( Crono.prototype );
 	
-	this.subtr = function (lastpoint) {
-		if (this.running) { 
+	Dist.prototype.subtr = function (lastpoint) {
+		if (this.running()) { 
 			this.pause();
 		}
-		//mock obter ponto atual
+		//mock obter coordenadas do ponto atual
 		actualpoint = {
 				latitude: -44.25231,
 				longitude: -3.68715
@@ -144,14 +154,16 @@ var Dist = function(valor_distancia, nome) {
 			timers.push(setTimeout(function () { self.subtr(actualpoint); }, this.check_interval*UNIT));
 		} else {
 			this.remtimes--;
-			this.play();
+			this.valor_distancia = this.valor_distancia_inicial;
+			timelapsed += 0.001;
+			this.play(); //não está retornando para o ponto desejado do script
 		}
-		this.display(this.valor_distancia, this.nome, this.remtimes);
+		this.display(this.valor_distancia, this.nome, this.remtimes); //necessario nova funcao display para distancias
 		console.log("Falta", this.valor_distancia, "metros");		
 	};
 	
-	this.countdown = function (lasttime) {
-		//mock obter ponto de partida
+	Dist.prototype.countdown = function (lasttime) {
+		//mock obter coordenadas do ponto de partida
 		startpoint = {
 				latitude: -44.65231,
 				longitude: -3.48715
@@ -161,7 +173,3 @@ var Dist = function(valor_distancia, nome) {
 		var self = this;
 		timers.push(setTimeout(function () { self.subtr(startpoint); }, (lasttime-timelapsed)*UNIT));
 	};
-
-};
-
-	Dist.prototype = Object.create( Crono.prototype );

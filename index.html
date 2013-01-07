@@ -68,7 +68,7 @@ var grp = 0;
  * Dispara a acoes do botao 'play/pause/)/Ok'
  */
  function btnCtrlPress() {
-	if (myscript.running) {
+	if (myscript.running()) {
 		myscript.pause();
 	} else {
 		if (editing) {
@@ -91,7 +91,7 @@ var grp = 0;
  function btnUpdt() {
 	var CTRLBTN = document.getElementById("ctrlBtn");
 	var SETBTN = document.getElementById("setBtn");
-	if (myscript.running) {
+	if (myscript.running()) {
 		CTRLBTN.innerHTML = '<a href="javascript:btnCtrlPress()" >pause</a>';
 		SETBTN.innerHTML = '<a href="javascript:btnSetPress()" >abort</a>';
 	} else {

@@ -33,7 +33,7 @@ var Script = function(expr) {
 			if (IS_GRP.test(tokenlist[token])) {
 				var multiplicador = new Crono(tokenlist[token].match(/^\d+/)[0]);
 				conteudo = tokenlist[token].match(GRP_CONTENT)[0].slice(1);
-				multiplicador.x(leiaTokens(conteudo));
+				multiplicador.x(readcronoarray(conteudo));
 				tokenlist[token] = multiplicador;
 			} else {
 				nome = tokenlist[token].match(/\w*$/)[0];
