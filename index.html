@@ -48,6 +48,15 @@ var grp = 0;
  	btnUpdt();
  }
 
+ /** 
+  * como e onde sera apresentada a contagem de distancia
+  */
+  Dist.prototype.display = function (distance, distname, remtimes) { //nao alterar esta linha
+ 	txtnum = '<span id="time">' + distance + "</span><br>" + distname;
+ 	if (remtimes>0) txtnum += " +" + remtimes;
+ 	document.getElementById("myDisplay").innerHTML = txtnum;
+  }
+
 /** 
  * Dispara a acoes do botao '+/set/reset/abort'
  */

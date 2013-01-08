@@ -105,8 +105,10 @@ var Crono = function(valor_inicial, nome) {
 		if (this.sub_crono.length == 0) {
 			for (var k=times; k>0; k--) {
 				lasttime = lag+lag2*k+this.valor_inicial*k+delay*(k-1);
+				console.log("chamando countdown para", this.nome, "lasttime", lasttime, "timelapsed", timelapsed);
 				if (lasttime>timelapsed) {
 					this.countdown(lasttime);
+					console.log("chamou");
 				}
 			}
 		} else {

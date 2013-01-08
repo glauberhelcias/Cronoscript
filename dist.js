@@ -9,6 +9,7 @@ var Dist = function(valor_distancia, nome) {
 	
 	Dist.prototype.subtr = function (lastpoint) {
 		if (this.running()) { 
+			console.log("parando crono para iniciar modo dist, o timelapsed é", timelapsed);
 			this.pause();
 		}
 		//mock obter coordenadas do ponto atual
@@ -25,6 +26,7 @@ var Dist = function(valor_distancia, nome) {
 			this.remtimes--;
 			this.valor_distancia = this.valor_distancia_inicial;
 			timelapsed += 0.001;
+			console.log("chamando play para continuar o modo crono de onde parou, o timelapsed é", timelapsed);
 			this.play(); //não está retornando para o ponto desejado do script
 		}
 		this.display(this.valor_distancia, this.nome, this.remtimes); //necessario nova funcao display para distancias
@@ -41,4 +43,5 @@ var Dist = function(valor_distancia, nome) {
 		this.remtimes++;
 		var self = this;
 		timers.push(setTimeout(function () { self.subtr(startpoint); }, (lasttime-timelapsed)*UNIT));
+		console.log("inciando contagem de metros em",(lasttime-timelapsed));
 	};
