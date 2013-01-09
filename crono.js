@@ -72,18 +72,18 @@ var Crono = function(valor_inicial, nome) {
 	};
 
 	Crono.prototype.countdown = function (lasttime) {
-		if (timelapsed>(lasttime-this.valor_inicial)) {
+		if (timelapsed>parseFloat((lasttime-this.valor_inicial).toFixed(3))) {
 			var self = this;
 			for(var p=1; p<this.valor; p++) {
-				timers.push(setTimeout(function() { self.subtr(); }, (lasttime-p-timelapsed)*UNIT));
+				timers.push(setTimeout(function() { self.subtr(); }, parseInt(lasttime-p-timelapsed)*UNIT));
 			}
 		} else {
 			if (timelapsed==0) this.remtimes++;
 			var self = this;
 			for(var p=1; p<this.valor_inicial; p++) {
-				timers.push(setTimeout(function() { self.subtr(); }, (lasttime-p-timelapsed)*UNIT));
+				timers.push(setTimeout(function() { self.subtr(); }, parseInt(lasttime-p-timelapsed)*UNIT));
 			}
-			timers.push(setTimeout(function() { self.reset(); }, (lasttime-this.valor_inicial-timelapsed)*UNIT));
+			timers.push(setTimeout(function() { self.reset(); }, parseInt(lasttime-this.valor_inicial-timelapsed)*UNIT));
 		}		
 	};
 	
@@ -102,13 +102,12 @@ var Crono = function(valor_inicial, nome) {
 	};
 	
 	Crono.prototype.run = function (times, lag, lag2, delay) {
+		console.log(times, lag, lag2, delay);
 		if (this.sub_crono.length == 0) {
 			for (var k=times; k>0; k--) {
-				lasttime = lag+lag2*k+this.valor_inicial*k+delay*(k-1);
-				console.log("chamando countdown para", this.nome, "lasttime", lasttime, "timelapsed", timelapsed);
+				lasttime = parseFloat((lag+lag2*k+this.valor_inicial*k+delay*(k-1)).toFixed(3));
 				if (lasttime>timelapsed) {
 					this.countdown(lasttime);
-					console.log("chamou");
 				}
 			}
 		} else {

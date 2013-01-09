@@ -18,15 +18,6 @@ var Script = function(expr) {
 	var MTS = /\d+(?=#)/;
 	var cronoarray = readcronoarray(expr);
 	
-	function cronoobj(){
-		if (cronoarray.length > 1) {
-			var newcrono = new Crono(1);
-			newcrono.x(cronoarray);
-			return newcrono;
-		}
-		return cronoarray[0];
-	};
-	
 	function readcronoarray(expr) {
 		var tokenlist = expr.match(SCRIPTRULE);
 		for (var token in tokenlist) {
@@ -54,6 +45,15 @@ var Script = function(expr) {
 		}
 		return tokenlist;
 	};
-
-	return cronoobj();
+	
+	Script.prototype.getInstance = function () {
+		if (cronoarray.length > 1) {
+			var newcrono = new Crono(1);
+			newcrono.x(cronoarray);
+			return newcrono;
+		}
+		return cronoarray[0];
+	};
+	
+	return this.getInstance();
 };
