@@ -3,15 +3,22 @@ var timelapsed = 0;
 var UNIT = 1000;
 
 var Crono = function(valor_inicial, nome) {
+	var isRunning;
 	this.valor_inicial = valor_inicial;
 	this.nome = nome;
 	this.remtimes = 0;
 	this.valor = valor_inicial;
 	this.tv = valor_inicial;
 	this.sub_crono = new Array();
+		
+	Crono.prototype.running = function (set) {
+		if (arguments.length>0) isRunning = set;
+		return isRunning;
+	};
 };
  	
 	Crono.prototype.clear = function () {
+		this.running(false);
 		timers = new Array();
 		timelapsed = 0;
 		this.timeover();
@@ -23,16 +30,16 @@ var Crono = function(valor_inicial, nome) {
 	};
 
 	Crono.prototype.subtr = function () {
-			this.valor--;
-			timelapsed++;
-			this.display(this.valor, this.nome, this.remtimes);
+		this.valor--;
+		timelapsed++;
+		this.display(this.valor, this.nome, this.remtimes);
 	};
 
 	Crono.prototype.reset = function () {
-			this.valor = this.valor_inicial;
-			this.remtimes--;
-			timelapsed++;
-			this.display_bip(this.valor, this.nome, this.remtimes);
+		this.valor = this.valor_inicial;
+		this.remtimes--;
+		timelapsed++;
+		this.display_bip(this.valor, this.nome, this.remtimes);
 	};
 
 	Crono.prototype.total_valor = function () {
@@ -91,18 +98,8 @@ var Crono = function(valor_inicial, nome) {
 		this.pause();
 		this.clear();
 	};
-	
-	Crono.prototype.running = function () {
-		if (timers.length==0) {
-			return false;
-		} else {
-			return true;
-		}
 		
-	};
-	
 	Crono.prototype.run = function (times, lag, lag2, delay) {
-		console.log(times, lag, lag2, delay);
 		if (this.sub_crono.length == 0) {
 			for (var k=times; k>0; k--) {
 				lasttime = parseFloat((lag+lag2*k+this.valor_inicial*k+delay*(k-1)).toFixed(3));
@@ -120,11 +117,13 @@ var Crono = function(valor_inicial, nome) {
 	};
 	
 	Crono.prototype.pause = function () {
+		this.running(false);
 		for(;timers.length>0;clearTimeout(timers.pop()));
 	};
 
 	Crono.prototype.play = function () {
+		this.running(true);
 		this.run(1,0,0,0);
 		var self = this;
-		timers.push(setTimeout(function () { self.clear(); }, (this.tv-timelapsed)*UNIT));
+		timers.push(setTimeout(function () { self.clear(); }, (this.tv-timelapsed)*UNIT)); //quando só há dist no script tv tende a zero! pode chamar o clear antes do dist chamar o pause
 	};
