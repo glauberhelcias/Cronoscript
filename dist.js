@@ -8,8 +8,8 @@ var Dist = function(valor_distancia, nome) {
 	Dist.prototype = Object.create( Crono.prototype );
 	
 	Dist.prototype.subtr = function (lastpoint) {
-		if (this.running()) { 
-			this.pause(); //problema quando script começa com dist
+		if (arguments.length==0) { 
+			this.pause();
 		}
 		//mock obter coordenadas do ponto atual
 		actualpoint = {
