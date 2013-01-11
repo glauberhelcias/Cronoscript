@@ -3,7 +3,7 @@ var timelapsed = 0;
 var UNIT = 1000;
 
 var Crono = function(valor_inicial, nome) {
-	var isRunning;
+	var isRunning = false;
 	this.valor_inicial = valor_inicial;
 	this.nome = nome;
 	this.remtimes = 0;
@@ -79,19 +79,19 @@ var Crono = function(valor_inicial, nome) {
 	};
 
 	Crono.prototype.countdown = function (lasttime) {
-		if (timelapsed>parseFloat((lasttime-this.valor_inicial).toFixed(3))) {
+		if (Math.round(timelapsed)>(lasttime-this.valor_inicial)) {
 			var self = this;
 			for(var p=1; p<this.valor; p++) {
-				timers.push(setTimeout(function() { self.subtr(); }, parseInt(lasttime-p-timelapsed)*UNIT));
+				timers.push(setTimeout(function() { self.subtr(); }, Math.round(lasttime-p-timelapsed)*UNIT));
 			}
 		} else {
 			if (timelapsed==0) this.remtimes++;
 			var self = this;
 			for(var p=1; p<this.valor_inicial; p++) {
-				timers.push(setTimeout(function() { self.subtr(); }, parseInt(lasttime-p-timelapsed)*UNIT));
+				timers.push(setTimeout(function() { self.subtr(); }, Math.round(lasttime-p-timelapsed)*UNIT));
 			}
-			timers.push(setTimeout(function() { self.reset(); }, parseInt(lasttime-this.valor_inicial-timelapsed)*UNIT));
-		}		
+			timers.push(setTimeout(function() { self.reset(); }, Math.round(lasttime-this.valor_inicial-timelapsed)*UNIT));
+		}
 	};
 	
 	Crono.prototype.abort = function () {
@@ -104,7 +104,7 @@ var Crono = function(valor_inicial, nome) {
 			for (var k=times; k>0; k--) {
 				lasttime = parseFloat((lag+lag2*k+this.valor_inicial*k+delay*(k-1)).toFixed(3));
 				if (lasttime>timelapsed) {
-					this.countdown(lasttime);
+					this.countdown(Math.round(lasttime));
 				}
 			}
 		} else {
@@ -125,5 +125,5 @@ var Crono = function(valor_inicial, nome) {
 		this.running(true);
 		this.run(1,0,0,0);
 		var self = this;
-		timers.push(setTimeout(function () { self.clear(); }, (this.tv-timelapsed)*UNIT)); //quando só há dist no script tv tende a zero! pode chamar o clear antes do dist chamar o pause
+		timers.push(setTimeout(function () { self.clear(); }, Math.round(this.tv-timelapsed)*UNIT));
 	};
