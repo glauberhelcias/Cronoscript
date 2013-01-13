@@ -61,7 +61,7 @@ var grp = 0;
  * Dispara a acoes do botao '+/set/reset/abort'
  */
  function btnSetPress() {
-	if (timelapsed>0) {
+	if (myscript.running()>0) {
 		myscript.abort();
 	} else {
 		if (editing) { 
