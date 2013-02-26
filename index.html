@@ -61,7 +61,7 @@ var grp = 0;
  * Dispara a acoes do botao '+/set/reset/abort'
  */
  function btnSetPress() {
-	if (myscript.running()>0) {
+	if (myscript.running()) {
 		myscript.abort();
 	} else {
 		if (editing) { 
@@ -134,7 +134,7 @@ var grp = 0;
 			}
 		} else {
 			if (txtscript!="") CTRLBTN.innerHTML = '<a href="javascript:btnCtrlPress()" >play</a>';
-			if (timelapsed==0) {
+			if (timelapsed==0) { //se a contagem não está pausada 
 				SETBTN.innerHTML = '<a href="javascript:btnSetPress()" >set</a>';
 				
 				if (txtscript!="") {
