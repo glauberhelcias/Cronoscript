@@ -1,7 +1,7 @@
 var timers = new Array();
 var timelapsed = 0;
 var UNIT = 1000;
-var displays = new Array();
+var displays = new Array(); //tentar colocar dentro de prototype
 
 var Crono = function(valor_inicial, nome) {
 	var isRunning = false;
