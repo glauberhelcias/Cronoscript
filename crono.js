@@ -1,6 +1,7 @@
 var timers = new Array();
 var timelapsed = 0;
 var UNIT = 1000;
+var displays = new Array();
 
 var Crono = function(valor_inicial, nome) {
 	var isRunning = false;
@@ -17,6 +18,17 @@ var Crono = function(valor_inicial, nome) {
 	};
 };
  	
+	Crono.prototype.newDisplay = function(args) {
+		displays.push(args);
+	};
+	
+	Crono.prototype.display = function(valor, nome, remtimes) {
+		for (var i=0;
+		i<displays.length;
+		displays[i](valor, nome, remtimes),
+		i++);
+	};
+	
 	Crono.prototype.clear = function () {
 		this.running(false);
 		timers = new Array();
