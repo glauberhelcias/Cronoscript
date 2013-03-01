@@ -25,7 +25,7 @@ var Dist = function(valor_distancia, nome) {
 			if (this.valor_distancia>0) {
 				var self = this;
 				timers.push(setTimeout(function () { self.subtr(actualpoint); }, this.check_interval*UNIT));
-				this.display(this.valor_distancia, this.nome, this.remtimes);
+				this.display(false);
 			} else {
 				this.remtimes--;
 				this.valor_distancia = this.valor_distancia_inicial;

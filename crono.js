@@ -23,8 +23,8 @@ var Crono = function(valor_inicial, nome) {
 		this.displays.push(args);
 	};
 	
-	Crono.prototype.display = function(valor, nome, remtimes, beep) {
-		for (var i=0;i<this.displays.length;this.displays[i](valor, nome, remtimes, beep),i++);
+	Crono.prototype.display = function(beep) {
+		for (var i=0;i<this.displays.length;this.displays[i](this, beep),i++);
 	};
 	
 	Crono.prototype.clear = function () {
@@ -42,14 +42,14 @@ var Crono = function(valor_inicial, nome) {
 	Crono.prototype.subtr = function () {
 		this.valor--;
 		timelapsed++;
-		this.display(this.valor, this.nome, this.remtimes, false);
+		this.display(false);
 	};
 
 	Crono.prototype.reset = function () {
 		this.valor = this.valor_inicial;
 		this.remtimes--;
 		timelapsed++;
-		this.display(this.valor, this.nome, this.remtimes, true);
+		this.display(true);
 	};
 
 	Crono.prototype.total_valor = function () {

@@ -19,15 +19,20 @@ var grp = 0;
  * como e onde serao apresentados os digitos do cronometro
  */
 myscript.newDisplay(
-	function (seconds, timername, remtimes, beep) { 
-		if (seconds>59) {
-			txtnum = '<span id="time">' + Math.floor(seconds/60) + ":";
-			if (seconds%60<10) txtnum += "0";
-			txtnum += seconds%60 + "</span><br>" + timername;
+	function (obj, beep) { 
+		if (obj instanceof Dist) {
+			txtnum = '<span id="time">' + obj.valor_distancia + "</span><br>" + obj.nome;
+		 	if (obj.remtimes>0) txtnum += " +" + obj.remtimes;
 		} else {
-			txtnum = '<span id="time_sec">' + seconds + "</span><br>" + timername;
+			if (obj.valor>59) {
+				txtnum = '<span id="time">' + Math.floor(obj.valor/60) + ":";
+				if (obj.valor%60<10) txtnum += "0";
+				txtnum += obj.valor%60 + "</span><br>" + obj.nome;
+			} else {
+				txtnum = '<span id="time_sec">' + obj.valor + "</span><br>" + obj.nome;
+			}
+			if (obj.remtimes>0) txtnum += " +" + obj.remtimes;
 		}
-		if (remtimes>0) txtnum += " +" + remtimes;
 		document.getElementById("myDisplay").innerHTML = txtnum;
 		if (beep) {
 			document.getElementById("myDisplay").innerHTML += "<audio autoplay=\"autoplay\"><source src=\"bip.mp3\" type=\"audio/mp3\" /><source src=\"bip.ogg\" type=\"audio/ogg\" /></audio>";
@@ -42,15 +47,6 @@ myscript.newDisplay(
 	document.getElementById("myDisplay").innerHTML = txtscript;
  	btnUpdt();
  }
-
- /** 
-  * como e onde sera apresentada a contagem de distancia
-  */
-  Dist.prototype.display = function (distance, distname, remtimes) { //nao alterar esta linha
- 	txtnum = '<span id="time">' + distance + "</span><br>" + distname;
- 	if (remtimes>0) txtnum += " +" + remtimes;
- 	document.getElementById("myDisplay").innerHTML = txtnum;
-  }
 
 /** 
  * Dispara a acoes do botao '+/set/reset/abort'
