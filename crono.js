@@ -1,7 +1,6 @@
 var timers = new Array();
 var timelapsed = 0;
 var UNIT = 1000;
-var displays = new Array(); //tentar colocar dentro de prototype
 
 var Crono = function(valor_inicial, nome) {
 	var isRunning = false;
@@ -18,15 +17,14 @@ var Crono = function(valor_inicial, nome) {
 	};
 };
  	
+	Crono.prototype.displays = new Array();
+	
 	Crono.prototype.newDisplay = function(args) {
-		displays.push(args);
+		this.displays.push(args);
 	};
 	
-	Crono.prototype.display = function(valor, nome, remtimes) {
-		for (var i=0;
-		i<displays.length;
-		displays[i](valor, nome, remtimes),
-		i++);
+	Crono.prototype.display = function(valor, nome, remtimes, beep) {
+		for (var i=0;i<this.displays.length;this.displays[i](valor, nome, remtimes, beep),i++);
 	};
 	
 	Crono.prototype.clear = function () {
@@ -44,14 +42,14 @@ var Crono = function(valor_inicial, nome) {
 	Crono.prototype.subtr = function () {
 		this.valor--;
 		timelapsed++;
-		this.display(this.valor, this.nome, this.remtimes);
+		this.display(this.valor, this.nome, this.remtimes, false);
 	};
 
 	Crono.prototype.reset = function () {
 		this.valor = this.valor_inicial;
 		this.remtimes--;
 		timelapsed++;
-		this.display_bip(this.valor, this.nome, this.remtimes);
+		this.display(this.valor, this.nome, this.remtimes, true);
 	};
 
 	Crono.prototype.total_valor = function () {
