@@ -17,21 +17,23 @@ var Crono = function(valor_inicial, nome) {
 	};
 };
  	
-	Crono.prototype.displays = new Array();
-	
-	Crono.prototype.newDisplay = function(args) {
-		this.displays.push(args);
-	};
+	Crono.prototype.displayActions = new Array();
 	
 	Crono.prototype.display = function(beep) {
-		for (var i=0;i<this.displays.length;this.displays[i](this, beep),i++);
+		for (var i=0;i<this.displayActions.length;this.displayActions[i](this, beep),i++);
+	};
+	
+	Crono.prototype.timeOverActions = new Array();
+	
+	Crono.prototype.timeOver = function() {
+		for (var i=0;i<this.timeOverActions.length;this.timeOverActions[i](),i++);
 	};
 	
 	Crono.prototype.clear = function () {
 		this.running(false);
 		timers = new Array();
 		timelapsed = 0;
-		this.timeover();
+		this.timeOver();
  	};
 
  	Crono.prototype.x = function (new_crono) {
