@@ -9,6 +9,7 @@ var Dist = function(valor_distancia, nome) {
 	
 	Dist.prototype.subtr = function (lastpoint) {
 		if (arguments.length==0) { 
+			this.remtimes--;
 			this.pause();
 			this.running(true);
 		}
@@ -36,7 +37,7 @@ var Dist = function(valor_distancia, nome) {
 	};
 	
 	Dist.prototype.countdown = function (lasttime) {
-		if (timelapsed==0) this.remtimes++; //problema no remtimes
+		if (timelapsed==0) this.remtimes++;
 		var self = this;
 		timers.push(setTimeout(function () { self.subtr(); }, (lasttime-timelapsed)*UNIT));
 	};
