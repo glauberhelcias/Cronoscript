@@ -14,7 +14,6 @@ var txtscript = "";
 var myscript = new Crono(0);
 var editing = false;
 var inserting = false;
-var grp = 0;
 
 /** 
  * como e onde serao apresentados os digitos do cronometro
@@ -49,101 +48,6 @@ var grp = 0;
 		btnUpdt();
 	 }
  );
-
- /** 
-  * Define a classe 'botão' da qual deve derivar os botoes da aplicação
-  */
-
-
-/** 
- * Dispara a acoes do botao '+/set/reset/abort'
- */
- function btnSetPress() {
-	if (myscript.running()) {
-		myscript.abort();
-	} else {
-		if (editing) { 
-			inserting = true;
-		} else { 
-			txtscript = "";
-			editing = true;
-		}
-	}
-	btnUpdt();
- }
-
-/** 
- * Dispara a acoes do botao 'play/pause/)/Ok'
- */
- function btnCtrlPress() {
-	if (myscript.running()) {
-		myscript.pause();
-	} else {
-		if (editing) {
-			if (grp==0) {
-				editing = false;
-			} else {
-				txtscript += ")";
-				grp--;	
-			} 
-		} else {
-			myscript.play();
-		}
-	}
-	btnUpdt();
- };
-
- /** 
-  * atualiza elementos de tela: botoes, formulario e painel
-  */
- function btnUpdt() {
-	var CTRLBTN = document.getElementById("ctrlBtn");
-	var SETBTN = document.getElementById("setBtn");
-	if (myscript.running()) {
-		CTRLBTN.innerHTML = '<a href="javascript:btnCtrlPress()" >pause</a>';
-		SETBTN.innerHTML = '<a href="javascript:btnSetPress()" >abort</a>';
-	} else {
-		if (editing) {
-			if (txtscript!="") {
-				document.getElementById("myDisplay").innerHTML = txtscript;
-			} else {
-				document.getElementById("myDisplay").innerHTML = "New script";
-			}
-			if (inserting) {
-				CTRLBTN.innerHTML = "";
-				SETBTN.innerHTML = "";
-				frmEditUpdt();
-			} else {
-				document.getElementById("editFrm").innerHTML="";
-				if (grp>0) {
-					if (txtscript.slice(-1)!="(") {
-						CTRLBTN.innerHTML = '<a href="javascript:btnCtrlPress()" >)</a>';
-					} else {
-						CTRLBTN.innerHTML = "";
-					}
-				} else {
-					if (txtscript!="") {
-						CTRLBTN.innerHTML = '<a href="javascript:btnCtrlPress()" >Ok</a>';
-					} else {
-						CTRLBTN.innerHTML = "";
-					}
-				}
-				SETBTN.innerHTML = '<a href="javascript:btnSetPress()" >+</a>';
-			}
-		} else {
-			if (txtscript!="") CTRLBTN.innerHTML = '<a href="javascript:btnCtrlPress()" >play</a>';
-			if (timelapsed==0) { //se a contagem nï¿½o estï¿½ pausada 
-				SETBTN.innerHTML = '<a href="javascript:btnSetPress()" >set</a>';
-				
-				if (txtscript!="") {
-					myscript = new Script(txtscript);
-				}
-			} else {
-				SETBTN.innerHTML = '<a href="javascript:btnSetPress()" >reset</a>';
-			}
-		}
-	}
- }
  
  function btnInputPress() {
 	 var valida = false;
@@ -187,7 +91,7 @@ var grp = 0;
  }
 </script>
 </head>
-<body onload="javascript:init()">
+<body onload="javascript:status.set(CHOICE)">
 <div id="myDisplay"></div>
 <span id="firstBtn"></span>
 <span id="secndBtn"></span>
