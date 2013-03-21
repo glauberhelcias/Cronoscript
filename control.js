@@ -2,6 +2,8 @@
  * 
  */
 
+var FRMSTEPHTML = '<select id="minutos"><option selected="selected" value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select>&prime;&nbsp;<select id="segundos"><option selected="selected" value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="20">20</option><option value="30">30</option></select>&Prime;<br><input type="text" size="13" id="titulo"><br><input type="radio" name="tipo" value="contador" checked="checked" onclick="javascript:frmEditUpdt()">Contador<br><input type="radio" name="tipo" value="multiplicador" onclick="javascript:frmEditUpdt()">Multiplicador<br><a href="javascript:btnInputPress()" >Ok</a>';
+var FRMSERIESHTML = '<select id="multiplica"><option selected="selected" value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select><br><input type="radio" name="tipo" value="contador" onclick="javascript:frmEditUpdt()">Contador<br><input type="radio" name="tipo" checked="checked" value="multiplicador" onclick="javascript:frmEditUpdt()">Multiplicador<br><a href="javascript:btnInputPress()" >Ok</a>';
 var CHOICE            = 0;
 var EDIT_STEP_TIME    = 1;
 var EDIT_SERIES       = 2;
@@ -27,13 +29,12 @@ var Control = function() {
 };
 
 var grp = 0;
-
 var status = new Control();
 
-var Botao = function(name, html_element, caption) {
+var Botao = function(name, html_element) {
 	this.name = name;
 	this.element = html_element;
-	this.caption = caption;
+	this.caption = "";
 	this.click = function () {
 		for (var i=0;i<this.perform.length;this.perform[i](this),i++);
 	};
@@ -43,14 +44,22 @@ var Botao = function(name, html_element, caption) {
 	};
 };
 
-/** 
- * botao responsável por 'play/pause/)/Ok'
- */
+var Formulario = function(name, html_element) {
+	this.name = name;
+	this.element = html_element;
+	this.statichtml = "";
+	this.display = function () {
+		document.getElementById(this.element).innerHTML = this.statichtml;
+	};
+};
+
+var frmEdit = new Formulario("frmEdit", "editFrm");
 var ctrlbtn = new Botao("ctrlbtn", "secndBtn");
 var setbtn = new Botao("setbtn", "firstBtn");
 
 status.observers.push( 
 	function () {
+		frmEdit.statichtml = "";
 		switch (status.get())
 		{
 		case CHOICE:
@@ -60,10 +69,12 @@ status.observers.push(
 		case EDIT_STEP_TIME:
 			ctrlbtn.caption = "Ok";
 			setbtn.caption = "Dist";
+			frmEdit.statichtml  = FRMSTEPHTML;
 			break;
 		case EDIT_SERIES:
 			ctrlbtn.caption = "Ok";
 			setbtn.caption = "AutoPause";
+			frmEdit.statichtml = FRMSERIESHTML;
 			break;
 		case EDIT_STEP_DIST:
 			ctrlbtn.caption = "Ok";
@@ -88,6 +99,7 @@ status.observers.push(
 		}
 		ctrlbtn.display();
 		setbtn.display();
+		frmEdit.display();
 	}
 );
 
@@ -136,6 +148,29 @@ ctrlbtn.perform.push(
 	}
 );
 
-/*setbtn.perform.push(
-		
-);*/
+setbtn.perform.push(
+	function () {
+		switch (status.get())	
+		{
+		case CHOICE:
+		case EDIT_STEP_DIST:
+			status.set(EDIT_STEP_TIME);
+			break;
+		case EDIT_STEP_TIME:
+			status.set(EDIT_STEP_DIST);
+			break;
+		case EDIT_SERIES:
+			//insere autopause no script;
+			break;
+		case PAUSED:
+			//reseta o script
+		case UNFINISHED_SERIES:
+		case READY:
+			status.set(CHOICE);
+			break;
+		case RUNNING:
+			status.set(READY);
+			break;
+		}
+	}		
+);
