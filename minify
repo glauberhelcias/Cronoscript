@@ -1,6 +1,6 @@
 // ==ClosureCompiler==
 // @compilation_level ADVANCED_OPTIMIZATIONS
-// @output_file_name default.js
+// @output_file_name cronoscript.min.js
 // @code_url https://github.com/glauberhelcias/Cronoscript/raw/master/crono.js
 // @code_url https://github.com/glauberhelcias/Cronoscript/raw/master/dist.js
 // @code_url https://github.com/glauberhelcias/Cronoscript/raw/master/script.js
