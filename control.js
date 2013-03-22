@@ -40,19 +40,6 @@ var Control = function() {
 var grp = 0;
 var status = new Control();
 
-var Botao = function(name, html_element) {
-	this.name = name;
-	this.element = html_element;
-	this.caption = "";
-	this.click = function () {
-		for (var i=0;i<this.perform.length;this.perform[i](this),i++);
-	};
-	this.perform = new Array();
-	this.display = function () {
-		document.getElementById(this.element).innerHTML = '<a href="javascript:' + this.name + '.click()" >'+ this.caption +'</a>';
-	};
-};
-
 var Formulario = function(name, html_element) {
 	this.name = name;
 	this.element = html_element;
@@ -63,62 +50,35 @@ var Formulario = function(name, html_element) {
 };
 
 var frmEdit = new Formulario("frmEdit", "editFrm");
-var ctrlbtn = new Botao("ctrlbtn", "secndBtn");
-var setbtn = new Botao("setbtn", "firstBtn");
 
-status.observers.push( 
-	function () {
-		frmEdit.statichtml = "";
-		switch (status.get())
+var setbtn = document.createElement("a");
+	setbtn.onclick = function () {
+		switch (status.get())	
 		{
 		case CHOICE:
-			ctrlbtn.caption = "Series";
-			setbtn.caption = "Step";
+		case EDIT_STEP_DIST:
+			status.set(EDIT_STEP_TIME);
 			break;
 		case EDIT_STEP_TIME:
-			ctrlbtn.caption = "Ok";
-			setbtn.caption = "Dist";
-			frmEdit.statichtml  = FRMSTEPHTML;
+			status.set(EDIT_STEP_DIST);
 			break;
 		case EDIT_SERIES:
-			ctrlbtn.caption = "Ok";
-			setbtn.caption = "AutoPause";
-			frmEdit.statichtml = FRMSERIESHTML;
-			break;
-		case EDIT_STEP_DIST:
-			ctrlbtn.caption = "Ok";
-			setbtn.caption = "Time";
-			frmEdit.statichtml = FRMDISTHTML;
-			break;
-		case UNFINISHED_SERIES:
-			ctrlbtn.caption = ")";
-			setbtn.caption = "Add";
-			break;
-		case READY:
-			ctrlbtn.caption = "Play";
-			setbtn.caption = "Add";
+			//insere autopause no script;
 			break;
 		case PAUSED:
-			ctrlbtn.caption = "Play";
-			setbtn.caption = "Reset";
+			//reseta o script
+		case UNFINISHED_SERIES:
+		case READY:
+			status.set(CHOICE);
 			break;
 		case RUNNING:
-			ctrlbtn.caption = "Pause";
-			setbtn.caption = "Abort";
+			status.set(READY);
 			break;
 		}
-		ctrlbtn.display();
-		setbtn.display();
-		frmEdit.display();
-	}
-);
+	};
 
-function emptyscript () {
-	return false;
-};
-
-ctrlbtn.perform.push(
-	function () {
+var ctrlbtn = document.createElement("a");
+	ctrlbtn.onclick = function () {
 		switch (status.get())	
 		{
 		case CHOICE:
@@ -155,32 +115,59 @@ ctrlbtn.perform.push(
 			status.set(PAUSED);
 			break;
 		}
+	};
+
+status.observers.push( 
+	function () {
+		frmEdit.statichtml = "";
+		switch (status.get())
+		{
+		case CHOICE:
+			ctrlbtn.textContent = "Series";
+			setbtn.textContent = "Step";
+			break;
+		case EDIT_STEP_TIME:
+			ctrlbtn.textContent = "Ok";
+			setbtn.textContent = "Dist";
+			frmEdit.statichtml  = FRMSTEPHTML;
+			break;
+		case EDIT_SERIES:
+			ctrlbtn.textContent = "Ok";
+			setbtn.textContent = "AutoPause";
+			frmEdit.statichtml = FRMSERIESHTML;
+			break;
+		case EDIT_STEP_DIST:
+			ctrlbtn.textContent = "Ok";
+			setbtn.textContent = "Time";
+			frmEdit.statichtml = FRMDISTHTML;
+			break;
+		case UNFINISHED_SERIES:
+			ctrlbtn.textContent = ")";
+			setbtn.textContent = "Add";
+			break;
+		case READY:
+			ctrlbtn.textContent = "Play";
+			setbtn.textContent = "Add";
+			break;
+		case PAUSED:
+			ctrlbtn.textContent = "Play";
+			setbtn.textContent = "Reset";
+			break;
+		case RUNNING:
+			ctrlbtn.textContent = "Pause";
+			setbtn.textContent = "Abort";
+			break;
+		}
+		frmEdit.display();
 	}
 );
 
-setbtn.perform.push(
-	function () {
-		switch (status.get())	
-		{
-		case CHOICE:
-		case EDIT_STEP_DIST:
-			status.set(EDIT_STEP_TIME);
-			break;
-		case EDIT_STEP_TIME:
-			status.set(EDIT_STEP_DIST);
-			break;
-		case EDIT_SERIES:
-			//insere autopause no script;
-			break;
-		case PAUSED:
-			//reseta o script
-		case UNFINISHED_SERIES:
-		case READY:
-			status.set(CHOICE);
-			break;
-		case RUNNING:
-			status.set(READY);
-			break;
-		}
-	}		
-);
+function emptyscript () {
+	return false;
+};
+
+function init() {
+	document.getElementById("secndBtn").appendChild(ctrlbtn);
+	document.getElementById("firstBtn").appendChild(setbtn);
+	status.set(CHOICE);
+}
