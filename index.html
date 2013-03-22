@@ -47,48 +47,7 @@ var inserting = false;
 		document.getElementById("myDisplay").innerHTML = txtscript;
 		btnUpdt();
 	 }
- );
- 
- function btnInputPress() {
-	 var valida = false;
-	 var txtent = "";
-	 if ((txtscript != "")&&(txtscript.slice(-1)!="(")) {
-		 txtent = ",";
-	 }
-	 if (document.getElementsByName("tipo")[0].checked) {
-		 if (parseInt(document.getElementById("minutos").value)>0) {
-			 txtent += document.getElementById("minutos").value + "'";
-			 valida = true;
-		 }
-		 if (parseInt(document.getElementById("segundos").value)>0) {
-			 txtent += document.getElementById("segundos").value + '"';
-			 valida = true;
-		 }
-		 if (valida) {
-			 txtscript += txtent + document.getElementById("titulo").value;
-		 }
-	 } else {
-		 if (parseInt(document.getElementById("multiplica").value)>0) {
-			 grp++;
-			 txtscript += txtent + document.getElementById("multiplica").value + "(";
-		 }
-	 }
-	 inserting = false;
-	 btnUpdt();
- }
-
- function frmEditUpdt () {
-	 var frmContador = '<select id="minutos"><option selected="selected" value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select>&prime;&nbsp;<select id="segundos"><option selected="selected" value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="20">20</option><option value="30">30</option></select>&Prime;<br><input type="text" size="13" id="titulo"><br><input type="radio" name="tipo" value="contador" checked="checked" onclick="javascript:frmEditUpdt()">Contador<br><input type="radio" name="tipo" value="multiplicador" onclick="javascript:frmEditUpdt()">Multiplicador<br><a href="javascript:btnInputPress()" >Ok</a>';
-	 var frmMultiplicador = '<select id="multiplica"><option selected="selected" value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select><br><input type="radio" name="tipo" value="contador" onclick="javascript:frmEditUpdt()">Contador<br><input type="radio" name="tipo" checked="checked" value="multiplicador" onclick="javascript:frmEditUpdt()">Multiplicador<br><a href="javascript:btnInputPress()" >Ok</a>';
-	 var frmEdit = document.getElementById("editFrm"); 
-	 if (frmEdit.innerHTML=="") {
-		 frmEdit.innerHTML = frmContador;
-	 } else if (document.getElementsByName("tipo")[0].checked) {
-		 frmEdit.innerHTML = frmContador;
-	 } else {
-		 frmEdit.innerHTML = frmMultiplicador; 
-	 }
- }
+ ); 
 </script>
 </head>
 <body onload="javascript:status.set(CHOICE)">
