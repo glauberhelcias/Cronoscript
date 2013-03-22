@@ -2,8 +2,17 @@
  * 
  */
 
-var FRMSTEPHTML = '<select id="minutos"><option selected="selected" value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select>&prime;&nbsp;<select id="segundos"><option selected="selected" value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="20">20</option><option value="30">30</option></select>&Prime;<br><input type="text" size="13" id="titulo"><br><input type="radio" name="tipo" value="contador" checked="checked" onclick="javascript:frmEditUpdt()">Contador<br><input type="radio" name="tipo" value="multiplicador" onclick="javascript:frmEditUpdt()">Multiplicador<br><a href="javascript:btnInputPress()" >Ok</a>';
-var FRMSERIESHTML = '<select id="multiplica"><option selected="selected" value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select><br><input type="radio" name="tipo" value="contador" onclick="javascript:frmEditUpdt()">Contador<br><input type="radio" name="tipo" checked="checked" value="multiplicador" onclick="javascript:frmEditUpdt()">Multiplicador<br><a href="javascript:btnInputPress()" >Ok</a>';
+function select(name, arr) {
+	t = '<select id="' + name + '"><option selected="selected" value="';
+	for(var j=0;j<arr.length-1;j++) {
+		t += arr[j] + '">' + arr[j] + '</option><option value="';
+	}
+	return t + arr[j] + '">' + arr[j] + '</option></select>';
+}
+
+var FRMSTEPHTML = select("minutos",[0,1,2,3,4,5,6,7,8,9,10,15,20,25,30,60]) + '&prime;&nbsp;' + select("segundos",[0,1,2,3,4,5,10,15,20,25,30,35,40,45,50,55]) + '&Prime;<br><input type="text" size="13" id="titulo"><br>';
+var FRMSERIESHTML = select("multiplica",[0,2,3,4,5,6,7,8,9,10,11,12,13,14,15]) + '<br>';
+var FRMDISTHTML = select("distancia",[0,100,200,300,400,500,1000,1500,2000,2500,3000,3500,4000]) + '<br>'; 
 var CHOICE            = 0;
 var EDIT_STEP_TIME    = 1;
 var EDIT_SERIES       = 2;
@@ -79,6 +88,7 @@ status.observers.push(
 		case EDIT_STEP_DIST:
 			ctrlbtn.caption = "Ok";
 			setbtn.caption = "Time";
+			frmEdit.statichtml = FRMDISTHTML;
 			break;
 		case UNFINISHED_SERIES:
 			ctrlbtn.caption = ")";
