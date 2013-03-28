@@ -10,9 +10,14 @@ function select(name, arr) {
 	return t + arr[j] + '">' + arr[j] + '</option></select>';
 }
 
-var FRMSTEPHTML = select("minutos",[0,1,2,3,4,5,6,7,8,9,10,15,20,25,30,60]) + '&prime;&nbsp;' + select("segundos",[0,1,2,3,4,5,10,15,20,25,30,35,40,45,50,55]) + '&Prime;<br><input type="text" size="13" id="titulo"><br>';
-var FRMSERIESHTML = select("multiplica",[0,2,3,4,5,6,7,8,9,10,11,12,13,14,15]) + '<br>';
-var FRMDISTHTML = select("distancia",[0,100,200,300,400,500,1000,1500,2000,2500,3000,3500,4000]) + '<br>'; 
+var IDMINUTOS = "minutos";
+var IDSEGUNDOS = "segundos";
+var IDTITULO = "titulo";
+var IDMULTIPLICA = "multiplica";
+var IDDISTANCIA = "distancia";
+var FRMSTEPHTML = select(IDMINUTOS,[0,1,2,3,4,5,6,7,8,9,10,15,20,25,30,60]) + '&prime;&nbsp;' + select(IDSEGUNDOS,[0,1,2,3,4,5,10,15,20,25,30,35,40,45,50,55]) + '&Prime;<br><input type="text" size="13" id="' + IDTITULO + '"><br>';
+var FRMSERIESHTML = select(IDMULTIPLICA,[0,2,3,4,5,6,7,8,9,10,11,12,13,14,15]) + '<br>';
+var FRMDISTHTML = select(IDDISTANCIA,[0,100,200,300,400,500,1000,1500,2000,2500,3000,3500,4000]) + '<br>';
 var CHOICE            = 0;
 var EDIT_STEP_TIME    = 1;
 var EDIT_SERIES       = 2;
@@ -34,18 +39,9 @@ var Control = function() {
 	};
 };
 
-var Formulario = function(name, html_element) {
-	this.name = name;
-	this.element = html_element;
-	this.statichtml = "";
-	this.display = function () {
-		document.getElementById(this.element).innerHTML = this.statichtml;
-	};
-};
-
 var grp = 0;
 var status = new Control();
-var frmEdit = new Formulario("frmEdit", "editFrm");
+var frmEdit = document.createElement("span");
 var ctrlbtn = document.createElement("a");
 var setbtn = document.createElement("a");
 
@@ -114,7 +110,7 @@ ctrlbtn.onclick = function () {
 };
 
 status.onchange = function () {
-	frmEdit.statichtml = "";
+	frmEdit.innerHTML = "";
 	switch (status.get())
 	{
 	case CHOICE:
@@ -124,17 +120,17 @@ status.onchange = function () {
 	case EDIT_STEP_TIME:
 		ctrlbtn.textContent = "Ok";
 		setbtn.textContent = "Dist";
-		frmEdit.statichtml  = FRMSTEPHTML;
+		frmEdit.innerHTML  = FRMSTEPHTML;
 		break;
 	case EDIT_SERIES:
 		ctrlbtn.textContent = "Ok";
 		setbtn.textContent = "AutoPause";
-		frmEdit.statichtml = FRMSERIESHTML;
+		frmEdit.innerHTML = FRMSERIESHTML;
 		break;
 	case EDIT_STEP_DIST:
 		ctrlbtn.textContent = "Ok";
 		setbtn.textContent = "Time";
-		frmEdit.statichtml = FRMDISTHTML;
+		frmEdit.innerHTML = FRMDISTHTML;
 		break;
 	case UNFINISHED_SERIES:
 		ctrlbtn.textContent = ")";
@@ -153,7 +149,6 @@ status.onchange = function () {
 		setbtn.textContent = "Abort";
 		break;
 	}
-	frmEdit.display();
 };
 
 function emptyscript () {
@@ -163,5 +158,6 @@ function emptyscript () {
 function init() {
 	document.getElementById("firstBtn").appendChild(setbtn);
 	document.getElementById("secndBtn").appendChild(ctrlbtn);
+	document.getElementById("editFrm").appendChild(frmEdit);
 	status.set(CHOICE);
 };
