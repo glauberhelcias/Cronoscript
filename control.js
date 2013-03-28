@@ -10,6 +10,10 @@ function select(name, arr) {
 	return t + arr[j] + '">' + arr[j] + '</option></select>';
 }
 
+function emptyscript () {
+	return false;
+};
+
 var IDMINUTOS = "minutos";
 var IDSEGUNDOS = "segundos";
 var IDTITULO = "titulo";
@@ -26,24 +30,62 @@ var UNFINISHED_SERIES = 4;
 var READY             = 5;
 var RUNNING           = 6;
 var PAUSED            = 7;
-var Control = function() {
-	this.onchange = null;
-	this.set = function (param) {
+var grp = 0;
+var frmEdit = document.createElement("span");
+var ctrlbtn = document.createElement("a");
+var setbtn = document.createElement("a");
+var status = {
+	get: function () {
+		return this.value;
+	},
+	set: function (param) {
 		if (this.value!=param) {
 			this.value = param;
 			this.onchange();
 		}
-	};
-	this.get = function () {
-		return this.value;
-	};
+	},
+	onchange: function () {
+		frmEdit.innerHTML = "";
+		switch (status.get())
+		{
+		case CHOICE:
+			ctrlbtn.textContent = "Series";
+			setbtn.textContent = "Step";
+			break;
+		case EDIT_STEP_TIME:
+			ctrlbtn.textContent = "Ok";
+			setbtn.textContent = "Dist";
+			frmEdit.innerHTML  = FRMSTEPHTML;
+			break;
+		case EDIT_SERIES:
+			ctrlbtn.textContent = "Ok";
+			setbtn.textContent = "AutoPause";
+			frmEdit.innerHTML = FRMSERIESHTML;
+			break;
+		case EDIT_STEP_DIST:
+			ctrlbtn.textContent = "Ok";
+			setbtn.textContent = "Time";
+			frmEdit.innerHTML = FRMDISTHTML;
+			break;
+		case UNFINISHED_SERIES:
+			ctrlbtn.textContent = ")";
+			setbtn.textContent = "Add";
+			break;
+		case READY:
+			ctrlbtn.textContent = "Play";
+			setbtn.textContent = "Add";
+			break;
+		case PAUSED:
+			ctrlbtn.textContent = "Play";
+			setbtn.textContent = "Reset";
+			break;
+		case RUNNING:
+			ctrlbtn.textContent = "Pause";
+			setbtn.textContent = "Abort";
+			break;
+		}
+	}
 };
-
-var grp = 0;
-var status = new Control();
-var frmEdit = document.createElement("span");
-var ctrlbtn = document.createElement("a");
-var setbtn = document.createElement("a");
 
 setbtn.onclick = function () {
 	switch (status.get())	
@@ -107,52 +149,6 @@ ctrlbtn.onclick = function () {
 		status.set(PAUSED);
 		break;
 	}
-};
-
-status.onchange = function () {
-	frmEdit.innerHTML = "";
-	switch (status.get())
-	{
-	case CHOICE:
-		ctrlbtn.textContent = "Series";
-		setbtn.textContent = "Step";
-		break;
-	case EDIT_STEP_TIME:
-		ctrlbtn.textContent = "Ok";
-		setbtn.textContent = "Dist";
-		frmEdit.innerHTML  = FRMSTEPHTML;
-		break;
-	case EDIT_SERIES:
-		ctrlbtn.textContent = "Ok";
-		setbtn.textContent = "AutoPause";
-		frmEdit.innerHTML = FRMSERIESHTML;
-		break;
-	case EDIT_STEP_DIST:
-		ctrlbtn.textContent = "Ok";
-		setbtn.textContent = "Time";
-		frmEdit.innerHTML = FRMDISTHTML;
-		break;
-	case UNFINISHED_SERIES:
-		ctrlbtn.textContent = ")";
-		setbtn.textContent = "Add";
-		break;
-	case READY:
-		ctrlbtn.textContent = "Play";
-		setbtn.textContent = "Add";
-		break;
-	case PAUSED:
-		ctrlbtn.textContent = "Play";
-		setbtn.textContent = "Reset";
-		break;
-	case RUNNING:
-		ctrlbtn.textContent = "Pause";
-		setbtn.textContent = "Abort";
-		break;
-	}
-};
-
-function emptyscript () {
-	return false;
 };
 
 function init() {
