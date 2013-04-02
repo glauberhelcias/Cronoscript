@@ -21,7 +21,7 @@ var IDMULTIPLICA = "multiplica";
 var IDDISTANCIA = "distancia";
 var FRMSTEPHTML = select(IDMINUTOS,[0,1,2,3,4,5,6,7,8,9,10,15,20,25,30,60]) + '&prime;&nbsp;' + select(IDSEGUNDOS,[0,1,2,3,4,5,10,15,20,25,30,35,40,45,50,55]) + '&Prime;<br><input type="text" size="13" id="' + IDTITULO + '"><br>';
 var FRMSERIESHTML = select(IDMULTIPLICA,[0,2,3,4,5,6,7,8,9,10,11,12,13,14,15]) + '<br>';
-var FRMDISTHTML = select(IDDISTANCIA,[0,100,200,300,400,500,1000,1500,2000,2500,3000,3500,4000]) + '<br>';
+var FRMDISTHTML = select(IDDISTANCIA,[0,100,200,300,400,500,1000,1500,2000,2500,3000,3500,4000]) + '<br><input type="text" size="13" id="' + IDTITULO + '"><br>';
 var CHOICE            = 0;
 var EDIT_STEP_TIME    = 1;
 var EDIT_SERIES       = 2;
@@ -84,6 +84,25 @@ var status = {
 			setbtn.textContent = "Abort";
 			break;
 		}
+	}
+};
+
+frmEdit.tostring = function () {
+	switch (status.get())
+	{
+	case EDIT_STEP_TIME:
+		min = frmEdit.children[IDMINUTOS].value;
+		sec = frmEdit.children[IDSEGUNDOS].value;
+		dig = ((min!="0")?(min + "'"):"")+((sec!="0")?(sec + '"'):"");
+		return (dig!="")?(dig + frmEdit.children[IDTITULO].value):"";
+	case EDIT_SERIES:
+		mult = frmEdit.children[IDMULTIPLICA].value;
+		return (mult!="0")?(mult + "("):"";
+	case EDIT_STEP_DIST:
+		dist = frmEdit.children[IDDISTANCIA].value;
+		return (dist!="0")?(dist + "#" + frmEdit.children[IDTITULO].value):"";
+	default:
+		return "";
 	}
 };
 
