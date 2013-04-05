@@ -34,6 +34,7 @@ var grp = 0;
 var frmEdit = document.createElement("span");
 var ctrlbtn = document.createElement("a");
 var setbtn = document.createElement("a");
+var display = document.createElement("span");
 var status = {
 	get: function () {
 		return this.value;
@@ -87,7 +88,7 @@ var status = {
 	}
 };
 
-frmEdit.tostring = function () {
+frmEdit.toString = function () {
 	switch (status.get())
 	{
 	case EDIT_STEP_TIME:
@@ -132,30 +133,42 @@ setbtn.onclick = function () {
 };
 
 ctrlbtn.onclick = function () {
+	txtedit = frmEdit.toString();
 	switch (status.get())	
 	{
 	case CHOICE:
 		status.set(EDIT_SERIES);
 		break;
-	case EDIT_STEP_TIME:
 	case EDIT_SERIES:
+		if (txtedit) grp++;
+	case EDIT_STEP_TIME:
 	case EDIT_STEP_DIST:
-		if (emptyscript()) {
-			status.set(CHOICE);
-		} else {
-			//formulario.incluir_token();
+		if ((display.textContent)||(txtedit)) {
+			if (txtedit&&display.textContent&&(display.textContent.slice(-1)!="(")) display.textContent += ",";
+			display.textContent += txtedit;
 			if (grp==0) {
 				status.set(READY);
 			} else {
 				status.set(UNFINISHED_SERIES);
 			}
+		} else {
+			status.set(CHOICE);
 		}
 		break;
 	case UNFINISHED_SERIES:
 		grp--;
-		//script.fechar_serie;
+		if (display.textContent.slice(-1)=="(") {
+			display.textContent = display.textContent.slice(0,-2);
+			if (display.textContent.slice(-1)==",") display.textContent = display.textContent.slice(0,-1);
+		} else {
+			display.textContent += ")";
+		}
 		if (grp==0) {
-			status.set(READY);
+			if (display.textContent) { 
+				status.set(READY);
+			} else {
+				status.set(CHOICE);
+			}
 		} else {
 			status.set(UNFINISHED_SERIES);
 		}
@@ -175,21 +188,22 @@ ctrlbtn.onclick = function () {
  */
 Crono.prototype.displayActions.push(
 	function (obj, beep) { 
+		display.id = "time";
 		if (obj instanceof Dist) {
-			txtnum = '<span id="time">' + obj.valor_distancia + "</span><br>" + obj.nome;
+			display.textContent = obj.valor_distancia + "<br>" + obj.nome;
 		} else {
 			if (obj.valor>59) {
-				txtnum = '<span id="time">' + Math.floor(obj.valor/60) + ":";
-				if (obj.valor%60<10) txtnum += "0";
-				txtnum += obj.valor%60 + "</span><br>" + obj.nome;
+				display.textContent = Math.floor(obj.valor/60) + ":";
+				if (obj.valor%60<10) display.textContent += "0";
+				display.textContent += obj.valor%60 + "<br>" + obj.nome;
 			} else {
-				txtnum = '<span id="time_sec">' + obj.valor + "</span><br>" + obj.nome;
+				display.id = "time_sec";
+				display.textContent = obj.valor + "<br>" + obj.nome;
 			}
 		}
-		if (obj.remtimes>0) txtnum += " +" + obj.remtimes;
-		document.getElementById("myDisplay").innerHTML = txtnum;
+		if (obj.remtimes>0) display.textContent += " +" + obj.remtimes;
 		if (beep) {
-			document.getElementById("myDisplay").innerHTML += "<audio autoplay=\"autoplay\"><source src=\"bip.mp3\" type=\"audio/mp3\" /><source src=\"bip.ogg\" type=\"audio/ogg\" /></audio>";
+			display.id = "time_beep";
 		}
 	}
 );
@@ -208,5 +222,6 @@ function init() {
 	document.getElementById("firstBtn").appendChild(setbtn);
 	document.getElementById("secndBtn").appendChild(ctrlbtn);
 	document.getElementById("editFrm").appendChild(frmEdit);
+	document.getElementById("myDisplay").appendChild(display);
 	status.set(CHOICE);
 };
