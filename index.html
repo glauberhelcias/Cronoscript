@@ -1,57 +1,18 @@
 <!DOCTYPE HTML>
 <html manifest="/cache.manifest">
-<head>
-<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
-<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-<link rel="stylesheet" type="text/css" href="style-wp.css">
-<script type="text/javascript" src="crono.js"></script>
-<script type="text/javascript" src="dist.js"></script>
-<script type="text/javascript" src="script.js"></script>
-<script type="text/javascript" src="control.js"></script>
-<script type="text/javascript">
-//variaveis globais 
-var txtscript = "";
-var myscript = new Crono(0);
-
-/** 
- * como e onde serao apresentados os digitos do cronometro
- */
- myscript.displayActions.push(
-	function (obj, beep) { 
-		if (obj instanceof Dist) {
-			txtnum = '<span id="time">' + obj.valor_distancia + "</span><br>" + obj.nome;
-		} else {
-			if (obj.valor>59) {
-				txtnum = '<span id="time">' + Math.floor(obj.valor/60) + ":";
-				if (obj.valor%60<10) txtnum += "0";
-				txtnum += obj.valor%60 + "</span><br>" + obj.nome;
-			} else {
-				txtnum = '<span id="time_sec">' + obj.valor + "</span><br>" + obj.nome;
-			}
-		}
-		if (obj.remtimes>0) txtnum += " +" + obj.remtimes;
-		document.getElementById("myDisplay").innerHTML = txtnum;
-		if (beep) {
-			document.getElementById("myDisplay").innerHTML += "<audio autoplay=\"autoplay\"><source src=\"bip.mp3\" type=\"audio/mp3\" /><source src=\"bip.ogg\" type=\"audio/ogg\" /></audio>";
-		}
-	}
- );
- 
-/** 
- * o script encerra ou eh abortado
- */
- myscript.timeOverActions.push(
-	function () {
-		document.getElementById("myDisplay").innerHTML = txtscript;
-		btnUpdt();
-	 }
- ); 
-</script>
-</head>
-<body onload="javascript:init()">
-<div id="myDisplay"></div>
-<div id="editFrm"></div>
-<span id="firstBtn"></span>
-<span id="secndBtn"></span>
-</body>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
+		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+		<link rel="stylesheet" type="text/css" href="style-wp.css">
+		<script type="text/javascript" src="crono.js"></script>
+		<script type="text/javascript" src="dist.js"></script>
+		<script type="text/javascript" src="script.js"></script>
+		<script type="text/javascript" src="control.js"></script>
+	</head>
+	<body onload="javascript:init()">
+		<div id="myDisplay"></div>
+		<div id="editFrm"></div>
+		<span id="firstBtn"></span>
+		<span id="secndBtn"></span>
+	</body>
 </html>

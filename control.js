@@ -170,6 +170,40 @@ ctrlbtn.onclick = function () {
 	}
 };
 
+/** 
+ * como e onde serao apresentados os digitos do cronometro
+ */
+Crono.prototype.displayActions.push(
+	function (obj, beep) { 
+		if (obj instanceof Dist) {
+			txtnum = '<span id="time">' + obj.valor_distancia + "</span><br>" + obj.nome;
+		} else {
+			if (obj.valor>59) {
+				txtnum = '<span id="time">' + Math.floor(obj.valor/60) + ":";
+				if (obj.valor%60<10) txtnum += "0";
+				txtnum += obj.valor%60 + "</span><br>" + obj.nome;
+			} else {
+				txtnum = '<span id="time_sec">' + obj.valor + "</span><br>" + obj.nome;
+			}
+		}
+		if (obj.remtimes>0) txtnum += " +" + obj.remtimes;
+		document.getElementById("myDisplay").innerHTML = txtnum;
+		if (beep) {
+			document.getElementById("myDisplay").innerHTML += "<audio autoplay=\"autoplay\"><source src=\"bip.mp3\" type=\"audio/mp3\" /><source src=\"bip.ogg\" type=\"audio/ogg\" /></audio>";
+		}
+	}
+);
+ 
+/** 
+ * o script encerra ou eh abortado
+ */
+Crono.prototype.timeOverActions.push(
+	function () {
+		document.getElementById("myDisplay").innerHTML = txtscript;
+		btnUpdt();
+	}
+);
+
 function init() {
 	document.getElementById("firstBtn").appendChild(setbtn);
 	document.getElementById("secndBtn").appendChild(ctrlbtn);
