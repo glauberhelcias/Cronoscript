@@ -35,6 +35,8 @@ var frmEdit = document.createElement("span");
 var ctrlbtn = document.createElement("a");
 var setbtn = document.createElement("a");
 var display = document.createElement("span");
+var txtscript = "";
+var myscript = null;
 var status = {
 	get: function () {
 		return this.value;
@@ -79,10 +81,13 @@ var status = {
 		case PAUSED:
 			ctrlbtn.textContent = "Play";
 			setbtn.textContent = "Reset";
+			myscript.pause();
 			break;
 		case RUNNING:
 			ctrlbtn.textContent = "Pause";
 			setbtn.textContent = "Abort";
+			if (!myscript) myscript = new Script(txtscript);
+			myscript.play();
 			break;
 		}
 	}
@@ -122,6 +127,9 @@ setbtn.onclick = function () {
 		break;
 	case PAUSED:
 		//reseta o script
+		myscript = null;
+		txtscript = "";
+		display.textContent = "";
 	case UNFINISHED_SERIES:
 	case READY:
 		status.set(CHOICE);
@@ -158,8 +166,7 @@ ctrlbtn.onclick = function () {
 	case UNFINISHED_SERIES:
 		grp--;
 		if (display.textContent.slice(-1)=="(") {
-			display.textContent = display.textContent.slice(0,-2);
-			if (display.textContent.slice(-1)==",") display.textContent = display.textContent.slice(0,-1);
+			display.textContent = display.textContent.replace(/\,?\d+\($/,"");
 		} else {
 			display.textContent += ")";
 		}
@@ -174,6 +181,8 @@ ctrlbtn.onclick = function () {
 		}
 		break;
 	case READY:
+		if (!txtscript) txtscript = display.textContent;
+		display.textContent = txtscript;
 	case PAUSED:
 		status.set(RUNNING);
 		break;
@@ -190,18 +199,18 @@ Crono.prototype.displayActions.push(
 	function (obj, beep) { 
 		display.id = "time";
 		if (obj instanceof Dist) {
-			display.textContent = obj.valor_distancia + "<br>" + obj.nome;
+			display.innerHTML = obj.valor_distancia + "<br>" + obj.nome;
 		} else {
 			if (obj.valor>59) {
 				display.textContent = Math.floor(obj.valor/60) + ":";
 				if (obj.valor%60<10) display.textContent += "0";
-				display.textContent += obj.valor%60 + "<br>" + obj.nome;
+				display.innerHTML += obj.valor%60 + "<br>" + obj.nome;
 			} else {
 				display.id = "time_sec";
-				display.textContent = obj.valor + "<br>" + obj.nome;
+				display.innerHTML = obj.valor + "<br>" + obj.nome;
 			}
 		}
-		if (obj.remtimes>0) display.textContent += " +" + obj.remtimes;
+		if (obj.remtimes>0) display.innerHTML += " +" + obj.remtimes;
 		if (beep) {
 			display.id = "time_beep";
 		}
@@ -213,8 +222,8 @@ Crono.prototype.displayActions.push(
  */
 Crono.prototype.timeOverActions.push(
 	function () {
-		document.getElementById("myDisplay").innerHTML = txtscript;
-		btnUpdt();
+		status.set(READY);
+		display.textContent = txtscript;
 	}
 );
 
