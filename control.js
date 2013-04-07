@@ -34,7 +34,8 @@ var grp = 0;
 var frmEdit = document.createElement("span");
 var ctrlbtn = document.createElement("a");
 var setbtn = document.createElement("a");
-var display = document.createElement("span");
+var display = document.createElement("div");
+var secdisp = document.createElement("span");
 var txtscript = "";
 var myscript = null;
 var status = {
@@ -86,7 +87,10 @@ var status = {
 		case RUNNING:
 			ctrlbtn.textContent = "Pause";
 			setbtn.textContent = "Abort";
-			if (!myscript) myscript = new Script(txtscript);
+			if (!loaded) {
+				myscript = new Script(txtscript);
+				loaded = true;
+			}
 			myscript.play();
 			break;
 		}
@@ -115,27 +119,25 @@ frmEdit.toString = function () {
 setbtn.onclick = function () {
 	switch (status.get())	
 	{
-	case CHOICE:
-	case EDIT_STEP_DIST:
+	case CHOICE: //setbtn.textContent = "Step";
+	case EDIT_STEP_DIST: //setbtn.textContent = "Time";
 		status.set(EDIT_STEP_TIME);
 		break;
-	case EDIT_STEP_TIME:
+	case EDIT_STEP_TIME: //setbtn.textContent = "Dist";
 		status.set(EDIT_STEP_DIST);
 		break;
-	case EDIT_SERIES:
-		//insere autopause no script;
+	case EDIT_SERIES: //setbtn.textContent = "AutoPause";
 		break;
-	case PAUSED:
-		//reseta o script
-		myscript = null;
+	case PAUSED: //setbtn.textContent = "Reset";
 		txtscript = "";
-		display.textContent = "";
-	case UNFINISHED_SERIES:
-	case READY:
+		myscript.abort();
+		myscript = null;
+	case UNFINISHED_SERIES: //setbtn.textContent = "Add";
+	case READY: //setbtn.textContent = "Add";
 		status.set(CHOICE);
 		break;
-	case RUNNING:
-		status.set(READY);
+	case RUNNING: //setbtn.textContent = "Abort";
+		myscript.abort();		
 		break;
 	}
 };
@@ -144,13 +146,13 @@ ctrlbtn.onclick = function () {
 	txtedit = frmEdit.toString();
 	switch (status.get())	
 	{
-	case CHOICE:
+	case CHOICE: //ctrlbtn.textContent = "Series";
 		status.set(EDIT_SERIES);
 		break;
-	case EDIT_SERIES:
+	case EDIT_SERIES: //ctrlbtn.textContent = "Ok";
 		if (txtedit) grp++;
-	case EDIT_STEP_TIME:
-	case EDIT_STEP_DIST:
+	case EDIT_STEP_TIME: //ctrlbtn.textContent = "Ok";
+	case EDIT_STEP_DIST: //ctrlbtn.textContent = "Ok";
 		if ((display.textContent)||(txtedit)) {
 			if (txtedit&&display.textContent&&(display.textContent.slice(-1)!="(")) display.textContent += ",";
 			display.textContent += txtedit;
@@ -163,7 +165,7 @@ ctrlbtn.onclick = function () {
 			status.set(CHOICE);
 		}
 		break;
-	case UNFINISHED_SERIES:
+	case UNFINISHED_SERIES: //ctrlbtn.textContent = ")";
 		grp--;
 		if (display.textContent.slice(-1)=="(") {
 			display.textContent = display.textContent.replace(/\,?\d+\($/,"");
@@ -180,13 +182,15 @@ ctrlbtn.onclick = function () {
 			status.set(UNFINISHED_SERIES);
 		}
 		break;
-	case READY:
-		if (!txtscript) txtscript = display.textContent;
-		display.textContent = txtscript;
-	case PAUSED:
+	case READY: //ctrlbtn.textContent = "Play";
+		if (txtscript!=display.textContent) {
+			txtscript = display.textContent;
+			loaded = false;
+		}
+	case PAUSED: //ctrlbtn.textContent = "Play";
 		status.set(RUNNING);
 		break;
-	case RUNNING:
+	case RUNNING: //ctrlbtn.textContent = "Pause";
 		status.set(PAUSED);
 		break;
 	}
@@ -197,20 +201,22 @@ ctrlbtn.onclick = function () {
  */
 Crono.prototype.displayActions.push(
 	function (obj, beep) { 
-		display.id = "time";
+		display.id = "time"; //TODO:mudar de id para class
 		if (obj instanceof Dist) {
-			display.innerHTML = obj.valor_distancia + "<br>" + obj.nome;
+			display.textContent = obj.valor_distancia;
 		} else {
 			if (obj.valor>59) {
 				display.textContent = Math.floor(obj.valor/60) + ":";
 				if (obj.valor%60<10) display.textContent += "0";
-				display.innerHTML += obj.valor%60 + "<br>" + obj.nome;
+				display.textContent += obj.valor%60;
+				
 			} else {
 				display.id = "time_sec";
-				display.innerHTML = obj.valor + "<br>" + obj.nome;
+				display.textContent = obj.valor;
 			}
 		}
-		if (obj.remtimes>0) display.innerHTML += " +" + obj.remtimes;
+		secdisp.textContent = obj.nome;
+		if (obj.remtimes>0) secdisp.textContent += " +" + obj.remtimes;
 		if (beep) {
 			display.id = "time_beep";
 		}
@@ -224,6 +230,8 @@ Crono.prototype.timeOverActions.push(
 	function () {
 		status.set(READY);
 		display.textContent = txtscript;
+		display.id = "";
+		secdisp.textContent = "";
 	}
 );
 
@@ -232,5 +240,6 @@ function init() {
 	document.getElementById("secndBtn").appendChild(ctrlbtn);
 	document.getElementById("editFrm").appendChild(frmEdit);
 	document.getElementById("myDisplay").appendChild(display);
+	document.getElementById("myDisplay").appendChild(secdisp);
 	status.set(CHOICE);
 };
