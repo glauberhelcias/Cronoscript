@@ -9,6 +9,9 @@
  *
  */
 
+/**
+ * @constructor
+ */
 var Script = function(expr) {
 	var SCRIPTRULE = /((((\d+\')?\d+\")|(\d+\')|(\d+#))\w*)|(\d+\(.+\))/g;
 	var IS_GRP = /\d+\(.+\)/;
