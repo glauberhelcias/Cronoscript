@@ -29,7 +29,7 @@ var setbtn = document.createElement("a");
 var display = document.createElement("div");
 var secdisp = document.createElement("span");
 var txtscript = "";
-var myscript = null;
+var myscript = new Crono(null, null); //inicialização meramente formal, sem função
 var status = {
 	get: function () {
 		return status.value;
