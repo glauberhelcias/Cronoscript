@@ -32,7 +32,7 @@ var txtscript = "";
 var myscript = null;
 var status = {
 	get: function () {
-		return this.value;
+		return status.value;
 	},
 	set: function (param) {
 		if (status.value!=param) {
