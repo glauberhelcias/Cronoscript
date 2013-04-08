@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 var Dist = function(valor_distancia, nome) {
 	this.valor_distancia_inicial = valor_distancia;
 	this.valor_distancia = valor_distancia;
