@@ -35,9 +35,9 @@ var status = {
 		return this.value;
 	},
 	set: function (param) {
-		if (this.value!=param) {
-			this.value = param;
-			this.onchange();
+		if (status.value!=param) {
+			status.value = param;
+			status.onchange();
 		}
 	},
 	onchange: function () {
