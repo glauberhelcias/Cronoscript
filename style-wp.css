@@ -17,19 +17,27 @@ a {
 	text-decoration: none;
 }
 
-#myDisplay {
+.display {
 	font-stretch: condensed;
 	font-weight: lighter;
 	max-width: 15ex;
 	word-wrap: break-word;
 }
 
-#time {
+.dist {
+	color: blue;
+}
+
+.running {
 	font-size: 27mm;
 }
 
-#time_sec {
+.sec {
 	font-size: 37mm;
+}
+
+.beep {
+	color: #2E8B57;
 }
 
 input, select {

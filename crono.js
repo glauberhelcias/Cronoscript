@@ -33,6 +33,14 @@ var Crono = function(valor_inicial, nome) {
 		this.running(false);
 		timers = new Array();
 		timelapsed = 0;
+		//zerar todos os remtimes
+		if (this.sub_crono.length == 0) {
+			this.remtimes = 0;
+		} else {
+			for(var m=0; m<this.sub_crono.length; m++) {
+				this.sub_crono[m].remtimes = 0;
+			}
+		}
 		this.timeOver();
  	};
 

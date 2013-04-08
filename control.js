@@ -1,7 +1,3 @@
-/**
- * 
- */
-
 function select(name, arr) {
 	t = '<select id="' + name + '"><option selected="selected" value="';
 	for(var j=0;j<arr.length-1;j++) {
@@ -9,10 +5,6 @@ function select(name, arr) {
 	}
 	return t + arr[j] + '">' + arr[j] + '</option></select>';
 }
-
-function emptyscript () {
-	return false;
-};
 
 var IDMINUTOS = "minutos";
 var IDSEGUNDOS = "segundos";
@@ -197,28 +189,29 @@ ctrlbtn.onclick = function () {
 };
 
 /** 
- * como e onde serao apresentados os digitos do cronometro
+ * como e onde serao apresentados os digitos do cronometro a cada tique do relogio
  */
 Crono.prototype.displayActions.push(
 	function (obj, beep) { 
-		display.id = "time"; //TODO:mudar de id para class
 		if (obj instanceof Dist) {
+			display.className = "display running dist";
 			display.textContent = obj.valor_distancia;
 		} else {
+			display.className = "display running";
 			if (obj.valor>59) {
 				display.textContent = Math.floor(obj.valor/60) + ":";
 				if (obj.valor%60<10) display.textContent += "0";
 				display.textContent += obj.valor%60;
 				
 			} else {
-				display.id = "time_sec";
+				display.className = "display running sec";
 				display.textContent = obj.valor;
 			}
 		}
 		secdisp.textContent = obj.nome;
 		if (obj.remtimes>0) secdisp.textContent += " +" + obj.remtimes;
 		if (beep) {
-			display.id = "time_beep";
+			display.className += " beep";
 		}
 	}
 );
@@ -230,12 +223,14 @@ Crono.prototype.timeOverActions.push(
 	function () {
 		status.set(READY);
 		display.textContent = txtscript;
-		display.id = "";
+		display.className = "display";
 		secdisp.textContent = "";
 	}
 );
 
 function init() {
+	display.className = "display";
+	secdisp.className = "display";
 	document.getElementById("firstBtn").appendChild(setbtn);
 	document.getElementById("secndBtn").appendChild(ctrlbtn);
 	document.getElementById("editFrm").appendChild(frmEdit);
