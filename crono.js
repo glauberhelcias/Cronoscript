@@ -2,6 +2,9 @@ var timers = new Array();
 var timelapsed = 0;
 var UNIT = 1000;
 
+/**
+ * @Constructor
+ */
 var Crono = function(valor_inicial, nome) {
 	var isRunning = false;
 	this.valor_inicial = valor_inicial;
@@ -20,13 +23,13 @@ var Crono = function(valor_inicial, nome) {
 	Crono.prototype.displayActions = new Array();
 	
 	Crono.prototype.display = function(beep) {
-		for (var i=0;i<this.displayActions.length;this.displayActions[i](this, beep),i++);
+		for (var i=0;i<this.displayActions.length;this.displayActions[i](this, beep),i++){};
 	};
 	
 	Crono.prototype.timeOverActions = new Array();
 	
 	Crono.prototype.timeOver = function() {
-		for (var i=0;i<this.timeOverActions.length;this.timeOverActions[i](),i++);
+		for (var i=0;i<this.timeOverActions.length;this.timeOverActions[i](),i++){};
 	};
 	
 	Crono.prototype.clear = function () {
@@ -138,7 +141,7 @@ var Crono = function(valor_inicial, nome) {
 	
 	Crono.prototype.pause = function () {
 		this.running(false);
-		for(;timers.length>0;clearTimeout(timers.pop()));
+		for(;timers.length>0;clearTimeout(timers.pop())){};
 	};
 
 	Crono.prototype.play = function () {
