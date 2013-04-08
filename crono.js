@@ -3,7 +3,7 @@ var timelapsed = 0;
 var UNIT = 1000;
 
 /**
- * @Constructor
+ * @constructor
  */
 var Crono = function(valor_inicial, nome) {
 	var isRunning = false;
