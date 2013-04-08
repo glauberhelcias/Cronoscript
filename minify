@@ -6,3 +6,5 @@
 // @code_url https://github.com/glauberhelcias/Cronoscript/raw/master/script.js
 // @code_url https://github.com/glauberhelcias/Cronoscript/raw/master/control.js
 // ==/ClosureCompiler==
+
+init();

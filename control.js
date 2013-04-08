@@ -228,7 +228,7 @@ Crono.prototype.timeOverActions.push(
 	}
 );
 
-function init() {
+function appinit() {
 	display.className = "display";
 	secdisp.className = "display";
 	document.getElementById("firstBtn").appendChild(setbtn);
@@ -238,3 +238,5 @@ function init() {
 	document.getElementById("myDisplay").appendChild(secdisp);
 	status.set(CHOICE);
 };
+
+window['appinit'] = appinit;
