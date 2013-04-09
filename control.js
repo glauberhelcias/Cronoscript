@@ -123,7 +123,6 @@ setbtn.onclick = function () {
 	case PAUSED: //setbtn.textContent = "Reset";
 		txtscript = "";
 		myscript.abort();
-		myscript = null;
 	case UNFINISHED_SERIES: //setbtn.textContent = "Add";
 	case READY: //setbtn.textContent = "Add";
 		status.set(CHOICE);
