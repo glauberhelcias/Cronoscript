@@ -9,15 +9,15 @@ function dataHoraFormatada() {
 	return (d.getDate()>9?"":"0")+d.getDate()+"/"+(d.getMonth()>9?"":"0")+d.getMonth()+"/"+d.getFullYear()+" "+d.getHours()+":"+(d.getMinutes()>9?"":"0")+d.getMinutes();
 }
 function zerar() {
-	document.cookie = "";
+	window.localStorage.clear();
 	refresh();
 }
 function bater() {
-	document.cookie += dataHoraFormatada() + "<br>";
+	window.localStorage.setItem("p", (window.localStorage.length?window.localStorage.getItem("p"):"") + dataHoraFormatada() + "<br>");
 	refresh();
 };
 function refresh() {
-	document.getElementById("historico").innerHTML = document.cookie;
+	document.getElementById("historico").innerHTML = window.localStorage.getItem("p");
 }
 </script>
 <style>
