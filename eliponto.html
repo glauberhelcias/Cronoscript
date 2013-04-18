@@ -13,7 +13,7 @@ function zerar() {
 	refresh();
 }
 function bater() {
-	window.localStorage.setItem("p", (window.localStorage.length?window.localStorage.getItem("p"):"") + dataHoraFormatada() + "<br>");
+	window.localStorage.setItem("p", dataHoraFormatada() + "<br>" + (window.localStorage.length?window.localStorage.getItem("p"):""));
 	refresh();
 };
 function refresh() {
