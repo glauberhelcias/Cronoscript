@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<HTML>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
+<script type="text/javascript" >
+function dataHoraFormatada() {
+	d = new Date();
+	return (d.getDate()>9?"":"0")+d.getDate()+"/"+(d.getMonth()>9?"":"0")+d.getMonth()+"/"+d.getFullYear()+" "+d.getHours()+":"+(d.getMinutes()>9?"":"0")+d.getMinutes();
+}
+function zerar() {
+	document.cookie = "";
+	refresh();
+}
+function bater() {
+	document.cookie += dataHoraFormatada() + "<br>";
+	refresh();
+};
+function refresh() {
+	document.getElementById("historico").innerHTML = document.cookie;
+}
+</script>
+<style>
+body {
+	font-family: Segoe UI,Arial,Verdana,Tahoma,sans-serif;
+	font-size: 9mm;
+	padding-left:0.8ex;
+}
+</style>
+</head>
+<body onload="javascript:refresh()">
+<h1>EliPonto</h1>
+<button onclick="javascript:bater()">Bater</button>
+<h2>Histórico</h2>
+<div id="historico"></div>
+<button onclick="javascript:zerar()">Apagar Tudo!</button>
+</body>
+</HTML>
