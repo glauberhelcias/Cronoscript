@@ -2,6 +2,7 @@
 <HTML>
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
 <script type="text/javascript" >
 function dataHoraFormatada() {
 	d = new Date();
@@ -20,8 +21,9 @@ function refresh() {
 }
 </script>
 <style>
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300);
 body {
-	font-family: Segoe UI,Arial,Verdana,Tahoma,sans-serif;
+	font-family: 'Open Sans',Verdana,Tahoma,sans-serif;
 	font-size: 9mm;
 	padding-left:0.8ex;
 }
@@ -30,7 +32,7 @@ body {
 <body onload="javascript:refresh()">
 <h1>EliPonto</h1>
 <button onclick="javascript:bater()">Bater</button>
-<h2>Histórico</h2>
+<h2>HistÃ³rico</h2>
 <div id="historico"></div>
 <button onclick="javascript:zerar()">Apagar Tudo!</button>
 </body>
