@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html manifest="/cache.manifest">
+  <head>
+		<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
+		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+		<style type="text/css">
+			@import url(http://fonts.googleapis.com/css?family=Open+Sans:300);
+			body {
+				font-family: 'Open Sans','Segoe UI',Roboto,Verdana,Tahoma,sans-serif;
+				font-size: 9mm;
+				padding-left:0.8ex;
+			}
+			a {
+				font-size: 6mm;
+				height:10ex;
+				width:10ex;
+				float:left;
+				margin:0.8ex 0.8ex 0 0;
+				padding:0.2ex;
+				background-color: #2E8B57;
+				color: #fff;
+				text-decoration: none;
+			}
+			.display {
+				font-stretch: condensed;
+				font-weight: lighter;
+				max-width: 15ex;
+				word-wrap: break-word;
+			}
+			.dist {
+				color: blue;
+			}
+			.running {
+				font-size: 27mm;
+			}
+			.sec {
+				font-size: 37mm;
+			}
+			.beep {
+				color: #2E8B57;
+			}
+			input, select {
+				font-size: 8mm;
+				margin:0.4ex;
+			}
+		</style>
+		<script type="text/javascript">var c=!1,f,g=[],j=0;function k(a,b){var d=c;this.e=a;this.n=b;this.b=0;this.d=this.c=a;this.a=[];k.prototype.f=function(a){0<arguments.length&&(d=a);return d}}f=k.prototype;f.i=[];f.display=function(a){for(var b=0;b<this.i.length;this.i[b](this,a),b++);};f.j=[];f.clear=function(){this.f(c);g=[];j=0;if(0==this.a.length)this.b=0;else for(var a=0;a<this.a.length;a++)this.a[a].b=0;for(a=0;a<this.j.length;this.j[a](),a++);};
+f.x=function(a){this.a=this.a.concat(a);a=0;if(0==this.a.length)a=valor;else{for(var b=0;b<this.a.length;b++)a+=this.a[b].d;a*=this.c}this.d=a};f.g=function(){this.c--;j++;this.display(c)};f.reset=function(){this.c=this.e;this.b--;j++;this.display(!0)};
+f.k=function(a){if(Math.round(j)>a-this.e)for(var b=this,d=1;d<this.c;d++)g.push(setTimeout(function(){b.g()},1E3*Math.round(a-d-j)));else{0==j&&this.b++;b=this;for(d=1;d<this.e;d++)g.push(setTimeout(function(){b.g()},1E3*Math.round(a-d-j)));g.push(setTimeout(function(){b.reset()},1E3*Math.round(a-this.e-j)))}};f.abort=function(){this.pause();this.clear()};
+function l(a,b,d,y,B){if(0==a.a.length)for(;0<b;b--)lasttime=parseFloat((d+y*b+a.e*b+B*(b-1)).toFixed(3)),lasttime>j&&a.k(Math.round(lasttime));else for(var u=0;u<b;u++)for(var q=0;q<a.a.length;q++){var r;r=0;if(0==a.a.length)r=valor;else for(var e=0;e<q;e++)r+=a.a[e].d;e=0;if(0==a.a.length)e=valor;else for(var E=q+1;E<a.a.length;E++)e+=a.a[E].d;l(a.a[q],a.e,d+y+u*(a.d+y+B),r,e)}}f.pause=function(){for(this.f(c);0<g.length;clearTimeout(g.pop()));};
+f.play=function(){this.f(!0);l(this,1,0,0,0);var a=this;g.push(setTimeout(function(){a.clear()},1E3*Math.round(this.d-j)))};function m(a,b){this.h=this.o=a;this.m=1;k.call(this,0.01,b)}m.prototype=Object.create(k.prototype);m.prototype.g=function(a){0==arguments.length&&(this.b--,this.pause(),this.f(!0));if(this.f())if(actualpoint={latitude:-44.2531,longitude:-3.6815},a&&(this.h-=3),0<this.h){var b=this;g.push(setTimeout(function(){b.g(actualpoint)},1E3*this.m));this.display(c)}else this.b--,this.h=this.o,j=parseFloat((j+0.01).toFixed(3)),n.prototype.l().play()};
+m.prototype.k=function(a){0==j&&this.b++;var b=this;g.push(setTimeout(function(){b.g()},1E3*(a-j)))};function n(a){function b(a){a=a.match(d);for(var h in a)if(y.test(a[h])){var e=new k(a[h].match(/^\d+/)[0]);conteudo=a[h].match(B)[0].slice(1);e.x(b(conteudo));a[h]=e}else nome=a[h].match(/\w*$/)[0],r.test(a[h])?(distancia=parseInt(a[h].match(r)[0]),a[h]=new m(distancia,nome)):(tempo=0,u.test(a[h])&&(tempo+=60*parseInt(a[h].match(u)[0])),q.test(a[h])&&(tempo+=parseInt(a[h].match(q)[0])),a[h]=new k(tempo,nome));return a}var d=/((((\d+\')?\d+\")|(\d+\')|(\d+#))\w*)|(\d+\(.+\))/g,y=/\d+\(.+\)/,B=/\(.+(?=\))/,
+u=/\d+(?=\')/,q=/\d+(?=\")/,r=/\d+(?=#)/,e=b(a);n.prototype.l=function(){if(1<e.length){var a=new k(1);a.x(e);return a}return e[0]};return this.l()};function p(a,b){t='<select id="'+a+'"><option selected="selected" value="';for(var d=0;d<b.length-1;d++)t+=b[d]+'">'+b[d]+'</option><option value="';return t+b[d]+'">'+b[d]+"</option></select>"}
+var s=p("minutos",[0,1,2,3,4,5,6,7,8,9,10,15,20,25,30,60])+"&prime;&nbsp;"+p("segundos",[0,1,2,3,4,5,10,15,20,25,30,35,40,45,50,55])+'&Prime;<br><input type="text" size="13" id="titulo"><br>',v=p("multiplica",[0,2,3,4,5,6,7,8,9,10,11,12,13,14,15])+"<br>",w=p("distancia",[0,100,200,300,400,500,1E3,1500,2E3,2500,3E3,3500,4E3])+'<br><input type="text" size="13" id="titulo"><br>',x=0,z=document.createElement("span"),A=document.createElement("a"),C=document.createElement("a"),D=document.createElement("div"),
+F=document.createElement("span"),G="",H;
+function I(a){if(J!=a)switch(J=a,z.innerHTML="",J){case 0:A.textContent="Series";C.textContent="Step";break;case 1:A.textContent="Ok";C.textContent="Dist";z.innerHTML=s;break;case 2:A.textContent="Ok";C.textContent="AutoPause";z.innerHTML=v;break;case 3:A.textContent="Ok";C.textContent="Time";z.innerHTML=w;break;case 4:A.textContent=")";C.textContent="Add";break;case 5:A.textContent="Play";C.textContent="Add";break;case 7:A.textContent="Play";C.textContent="Reset";H.pause();break;case 6:A.textContent=
+"Pause",C.textContent="Abort",loaded||(H=new n(G),loaded=!0),H.play()}}var J;z.toString=function(){switch(J){case 1:return min=z.children.minutos.value,sec=z.children.segundos.value,dig=("0"!=min?min+"'":"")+("0"!=sec?sec+'"':""),""!=dig?dig+z.children.titulo.value:"";case 2:return mult=z.children.multiplica.value,"0"!=mult?mult+"(":"";case 3:return dist=z.children.distancia.value,"0"!=dist?dist+"#"+z.children.titulo.value:"";default:return""}};
+C.onclick=function(){switch(J){case 0:case 3:I(1);break;case 1:I(3);break;case 7:G="",H.abort(),H=null;case 4:case 5:I(0);break;case 6:H.abort()}};
+A.onclick=function(){txtedit=z.toString();switch(J){case 0:I(2);break;case 2:txtedit&&x++;case 1:case 3:D.textContent||txtedit?(txtedit&&(D.textContent&&"("!=D.textContent.slice(-1))&&(D.textContent+=","),D.textContent+=txtedit,0==x?I(5):I(4)):I(0);break;case 4:x--;D.textContent="("==D.textContent.slice(-1)?D.textContent.replace(/\,?\d+\($/,""):D.textContent+")";0==x?D.textContent?I(5):I(0):I(4);break;case 5:G!=D.textContent&&(G=D.textContent,loaded=c);case 7:I(6);break;case 6:I(7)}};
+k.prototype.i.push(function(a,b){a instanceof m?(D.className="display running dist",D.textContent=a.h):(D.className="display running",59<a.c?(D.textContent=Math.floor(a.c/60)+":",10>a.c%60&&(D.textContent+="0"),D.textContent+=a.c%60):(D.className="display running sec",D.textContent=a.c));F.textContent=a.n;0<a.b&&(F.textContent+=" +"+a.b);b&&(D.className+=" beep")});k.prototype.j.push(function(){I(5);D.textContent=G;D.className="display";F.textContent=""});
+window.appinit=function(){D.className="display";F.className="display";document.getElementById("firstBtn").appendChild(C);document.getElementById("secndBtn").appendChild(A);document.getElementById("editFrm").appendChild(z);document.getElementById("myDisplay").appendChild(D);document.getElementById("myDisplay").appendChild(F);I(0)};</script>
+		</head>
+	<body onload="javascript:appinit()">
+		<div id="myDisplay"></div>
+		<div id="editFrm"></div>
+		<span id="firstBtn"></span>
+		<span id="secndBtn"></span>
+	</body>
+</html>
