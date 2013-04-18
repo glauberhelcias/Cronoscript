@@ -23,14 +23,26 @@ function refresh() {
 <style>
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300);
 body {
-	font-family: 'Open Sans',Verdana,Tahoma,sans-serif;
+    font-family: 'Open Sans',Verdana,Tahoma,sans-serif;
+    font-size: 9mm;
+}
+.principal {
+    height: 6em;
+    width: 6em;
+    font-size: 9mm;
+}
+.titulo {
+    font-size: 15mm;
+}
+.titulo2 {
+    font-size: 12mm;
 }
 </style>
 </head>
 <body onload="javascript:refresh()">
-<h3>EliPonto</h3>
-<button onclick="javascript:bater()">Bater</button>
-<h5>Registros</h5>
+<p class="titulo">EliPonto</p>
+<button class="principal" onclick="javascript:bater()">Bater</button>
+<p class="titulo2">Registros</p>
 <div id="historico"></div>
 <button onclick="javascript:zerar()">Apagar Tudo!</button>
 </body>
