@@ -80,7 +80,14 @@ var status = {
 			ctrlbtn.textContent = "Pause";
 			setbtn.textContent = "Abort";
 			if (!loaded) {
-				myscript = new Script(txtscript);
+				myscript = script.parse(txtscript);
+				if (myscript.length > 1) {
+					var newcrono = new Crono(1);
+					newcrono.x(myscript);
+					myscript = newcrono;
+				} else {
+					myscript = myscript[0];
+				}
 				loaded = true;
 			}
 			myscript.play();
