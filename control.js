@@ -30,19 +30,19 @@ var display = document.createElement("div");
 var secdisp = document.createElement("span");
 var txtscript = "";
 var myscript; // = new Crono(null, null); //inicialização meramente formal, sem função
-var status = {
+var appstatus = {
 	get: function () {
-		return status.value;
+		return appstatus.value;
 	},
 	set: function (param) {
-		if (status.value!=param) {
-			status.value = param;
-			status.onchange();
+		if (appstatus.value!=param) {
+			appstatus.value = param;
+			appstatus.onchange();
 		}
 	},
 	onchange: function () {
 		frmEdit.innerHTML = "";
-		switch (status.get())
+		switch (appstatus.get())
 		{
 		case CHOICE:
 			ctrlbtn.textContent = "Series";
@@ -97,7 +97,7 @@ var status = {
 };
 
 frmEdit.toString = function () {
-	switch (status.get())
+	switch (appstatus.get())
 	{
 	case EDIT_STEP_TIME:
 		min = frmEdit.children[IDMINUTOS].value;
@@ -116,14 +116,14 @@ frmEdit.toString = function () {
 };
 
 setbtn.onclick = function () {
-	switch (status.get())	
+	switch (appstatus.get())	
 	{
 	case CHOICE: //setbtn.textContent = "Step";
 	case EDIT_STEP_DIST: //setbtn.textContent = "Time";
-		status.set(EDIT_STEP_TIME);
+		appstatus.set(EDIT_STEP_TIME);
 		break;
 	case EDIT_STEP_TIME: //setbtn.textContent = "Dist";
-		status.set(EDIT_STEP_DIST);
+		appstatus.set(EDIT_STEP_DIST);
 		break;
 	case EDIT_SERIES: //setbtn.textContent = "AutoPause";
 		break;
@@ -132,7 +132,7 @@ setbtn.onclick = function () {
 		myscript.abort();
 	case UNFINISHED_SERIES: //setbtn.textContent = "Add";
 	case READY: //setbtn.textContent = "Add";
-		status.set(CHOICE);
+		appstatus.set(CHOICE);
 		break;
 	case RUNNING: //setbtn.textContent = "Abort";
 		myscript.abort();		
@@ -142,10 +142,10 @@ setbtn.onclick = function () {
 
 ctrlbtn.onclick = function () {
 	txtedit = frmEdit.toString();
-	switch (status.get())	
+	switch (appstatus.get())	
 	{
 	case CHOICE: //ctrlbtn.textContent = "Series";
-		status.set(EDIT_SERIES);
+		appstatus.set(EDIT_SERIES);
 		break;
 	case EDIT_SERIES: //ctrlbtn.textContent = "Ok";
 		if (txtedit) grp++;
@@ -155,12 +155,12 @@ ctrlbtn.onclick = function () {
 			if (txtedit&&display.textContent&&(display.textContent.slice(-1)!="(")) display.textContent += ",";
 			display.textContent += txtedit;
 			if (grp==0) {
-				status.set(READY);
+				appstatus.set(READY);
 			} else {
-				status.set(UNFINISHED_SERIES);
+				appstatus.set(UNFINISHED_SERIES);
 			}
 		} else {
-			status.set(CHOICE);
+			appstatus.set(CHOICE);
 		}
 		break;
 	case UNFINISHED_SERIES: //ctrlbtn.textContent = ")";
@@ -172,12 +172,12 @@ ctrlbtn.onclick = function () {
 		}
 		if (grp==0) {
 			if (display.textContent) { 
-				status.set(READY);
+				appstatus.set(READY);
 			} else {
-				status.set(CHOICE);
+				appstatus.set(CHOICE);
 			}
 		} else {
-			status.set(UNFINISHED_SERIES);
+			appstatus.set(UNFINISHED_SERIES);
 		}
 		break;
 	case READY: //ctrlbtn.textContent = "Play";
@@ -186,10 +186,10 @@ ctrlbtn.onclick = function () {
 			loaded = false;
 		}
 	case PAUSED: //ctrlbtn.textContent = "Play";
-		status.set(RUNNING);
+		appstatus.set(RUNNING);
 		break;
 	case RUNNING: //ctrlbtn.textContent = "Pause";
-		status.set(PAUSED);
+		appstatus.set(PAUSED);
 		break;
 	}
 };
@@ -242,7 +242,7 @@ function appinit() {
 	document.getElementById("editFrm").appendChild(frmEdit);
 	document.getElementById("myDisplay").appendChild(display);
 	document.getElementById("myDisplay").appendChild(secdisp);
-	status.set(CHOICE);
+	appstatus.set(CHOICE);
 };
 
 window['appinit'] = appinit;
