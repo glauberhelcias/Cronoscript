@@ -1,12 +1,40 @@
 /**
  * 
- * Gramatica ABNF (http://tools.ietf.org/html/rfc5234) que define uma expressao valida:
- * script =  expr *("," [SP] expr)                ; uma expressao ou uma sequencia delas
- * expr   =  [1*DIGIT %x27] 1*DIGIT DQUOTE *ALPHA ; minutos e segundos ou so segundos
- * expr   =/ 1*DIGIT %x27 *ALPHA                  ; ou so minutos
- * expr   =/ 1*DIGIT %x23 *ALPHA                  ; ou uma distancia em metros
- * expr   =/ 1*DIGIT "(" script ")"               ; ou uma repeticao sobre um script
- *
+ * Gramatica PEGjs
+ *  
+ * script
+ *  = a:expr b:nexpr* {return Array(a).concat(b)}
+ * 
+ * digit
+ *  = d:[0-9]+ {return parseInt(d.join(""))}
+ * 
+ * alpha
+ *  = titulo:[A-Za-zÀ-ú \-]+ {return titulo.join("")}
+ * 
+ * mins
+ *  = m:digit "'" {return m * 60}
+ * 
+ * secs
+ *  = s:digit '"' {return s}
+ * 
+ * mmss
+ *  = m:mins s:secs {return m+s}
+ * 
+ * mtrs
+ *  = d:digit '#' {return d} 
+ * 
+ * expr
+ *  = a:(mmss/secs/mins) ' '? t:alpha? {return new Crono(a,t)}
+ *  / d:mtrs ' '? t:alpha? {return new Dist(d,t)}
+ *  / mult:digit '(' s:script ')' {
+ *     var multiplicador = new Crono(mult);
+ *     multiplicador.x(s);
+ *     return multiplicador;
+ *    }
+ * 
+ * nexpr
+ *  =',' ' '? e:expr {return e}
+ * 
  */
 
 script = (function(){
