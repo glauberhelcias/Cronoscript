@@ -227,7 +227,7 @@ Crono.prototype.displayActions.push(
  */
 Crono.prototype.timeOverActions.push(
 	function () {
-		status.set(READY);
+		appstatus.set(READY);
 		display.textContent = txtscript;
 		display.className = "display";
 		secdisp.textContent = "";
